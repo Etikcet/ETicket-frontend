@@ -8,7 +8,7 @@ import HomeNavigationBar from "../../components/HomeNavigationBar";
 // useRef
 export default function SignUpPage() {
   const [x, setX] = useState(5);
-  const [y, setY] = useState(6);
+
 
   useEffect(() => {
     console.log("page loaded");
