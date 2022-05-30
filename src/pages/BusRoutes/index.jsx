@@ -46,7 +46,7 @@ export default function BusRoutes() {
         <Toolbar>
           
           <Typography variant="h6" color="inherit" noWrap>
-            Routes
+            ETikcet
           </Typography>
         </Toolbar>
       </AppBar>
@@ -69,8 +69,10 @@ export default function BusRoutes() {
               <Grid item key={card} xs={12} sm={6} md={4}>
                 <Card
                   sx={{ height: '100%', display: 'flex', flexDirection: 'column' }}
-                  style={{width:'300px'}}
+                  style={{width:'300px', borderStyle:'solid', borderColor:'#A97ED5'}}
                 >
+                <Link href='' 
+                 style={{ }}>
                 <CardActionArea>
                   <CardMedia
                     component="img"
@@ -84,18 +86,15 @@ export default function BusRoutes() {
                   />
                   <CardContent sx={{ flexGrow: 1 }}>
                     <Typography gutterBottom variant="h5" component="h2">
-                      Heading
+                      Start-Finish
                     </Typography>
-                    <Typography>
-                      This is a media card. You can use this section to describe the
-                      content.
+                    <Typography variant="h6">
+                      price
                     </Typography>
                   </CardContent>
-                  <CardActions>
-                    <Button size="small">View</Button>
-                    <Button size="small">Edit</Button>
-                  </CardActions>
+                  
                   </CardActionArea>
+                  </Link>
                 </Card>
               </Grid>
             ))}
