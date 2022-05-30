@@ -9,9 +9,8 @@ export default function HomeNavigationBar() {
 
   return (
     <div style={{backgroundColor:'#3493E8'}}>
-      <Stack spacing={20} direction="row">
+      <Stack spacing={'17%'} direction="row">
         <Button variant="contained" onClick={() => navigate("/")}>Home</Button>
-        <Button variant="contained" onClick={() => navigate("/booking")}>Booking</Button>
         <Button variant="contained" onClick={() => navigate("/busroutes")}>Routes</Button>
         <Button variant="contained" onClick={() => navigate("/signin")}>signIn</Button>
         <Button variant="contained" onClick={() => navigate("/signup")}>SignUp</Button>
