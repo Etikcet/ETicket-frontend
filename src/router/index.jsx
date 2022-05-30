@@ -7,6 +7,7 @@ import SignIn from "../pages/SignIn"
 import BusRoutes  from "../pages/BusRoutes";
 import AddRoutes  from "../pages/AddRoutes";
 import AddSchedules  from "../pages/AddSchedules";
+import BookingView  from "../pages/BookingView";
 
 export default function Router() {
   return (
@@ -20,6 +21,7 @@ export default function Router() {
           <Route path="/signin" element={<SignIn />} />
           <Route path="/addroutes" element={<AddRoutes />} />
           <Route path="/addschedules" element={<AddSchedules />} />
+          <Route path="/bookingview" element={<BookingView />} />
         </Routes>
       </BrowserRouter>
     </div>
