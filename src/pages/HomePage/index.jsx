@@ -5,6 +5,7 @@ import Footer from "../../components/Footer";
 import PopularRoutes from "../../components/PopularRoutes";
 import bImage from "../HomePage/bg.png";
 import Logo from "../../components/Logo/index";
+import Search from "../../components/Search"
 
 export default function Home() {
   return (
@@ -28,7 +29,9 @@ export default function Home() {
             <p>find and book your seat</p>
           </div>
         </div>
+        
 
+        <Search/>
         <p
           style={{
             textAlign: "center",

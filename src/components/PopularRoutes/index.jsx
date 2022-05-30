@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 import BusRoute from '../BusRoute';
 import Stack from "@mui/material/Stack";
 
