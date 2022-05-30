@@ -4,7 +4,7 @@ function getStyels (){
     return (
         {
             textAlign: 'center',
-            backgroundColor: 'grey',
+            backgroundColor: '#3493E8',
             fontStyle: 'italic'
         }
     );

@@ -1,37 +1,22 @@
 import React from "react";
-import Paper from "@mui/material/Paper";
+
 import Stack from "@mui/material/Stack";
-import { styled } from "@mui/material/styles";
-
-const Item = styled(Paper)(({ theme }) => ({
-  backgroundColor: theme.palette.mode === "dark" ? "#1A2027" : "#fff",
-
-  ...theme.typography.body2,
-  padding: theme.spacing(1),
-  textAlign: "center",
-  color: theme.palette.text.secondary,
-}));
+import Button from "@mui/material/Button";
+import { useNavigate } from "react-router-dom";
 
 export default function HomeNavigationBar() {
+  const navigate = useNavigate();
+
   return (
-    <div style={{backgroundColor:'grey'}}>
-      <Stack direction="row" spacing={28}>
-        <a href="/">
-          <Item>ET ETicket</Item>
-        </a>
-        <a href="/busroutes">
-          <Item>Routes</Item>
-        </a>
-        <a href="/signup">
-          <Item>Sign Up</Item>
-        </a>
-        <a href="/">
-          <Item>Sign In</Item>
-        </a>
-        <a href="/">
-          <Item>Help</Item>
-        </a>
+    <div style={{backgroundColor:'#3493E8'}}>
+      <Stack spacing={'17%'} direction="row">
+        <Button variant="contained" onClick={() => navigate("/")}>Home</Button>
+        <Button variant="contained" onClick={() => navigate("/busroutes")}>Routes</Button>
+        <Button variant="contained" onClick={() => navigate("/signin")}>signIn</Button>
+        <Button variant="contained" onClick={() => navigate("/signup")}>SignUp</Button>
+        <Button variant="contained" onClick={() => navigate("/help")}>help</Button>
       </Stack>
     </div>
   );
 }
+

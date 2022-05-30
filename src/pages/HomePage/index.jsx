@@ -3,6 +3,7 @@ import React from "react";
 import HomeNavigationBar from "../../components/HomeNavigationBar";
 import Footer from "../../components/Footer";
 
+
 export default function Home() {
   return (
     (document.title = "Home page"),
@@ -25,6 +26,7 @@ export default function Home() {
         >
           Popular Routes
         </p>
+        
         <Footer />
       </div>
     )
