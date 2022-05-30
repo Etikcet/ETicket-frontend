@@ -52,99 +52,96 @@ export default function SignUp() {
           <img src={SIGNUP_IMAGE} alt="" style={{ width: "40vw" }} />
         </div>
         <div>
-          <form action="">
-            <h2 style={{ fontSize: 48, fontFamily: "Lato", margin: 0 }}>
-              Welcome to Eticket!
-            </h2>
-            <p style={{ color: "rgba(0,0,0,0.5)" }}>
-              Fill these details to sign up
-            </p>
-            <Stack direction="column" spacing={2}>
-              <Formik
-                initialValues={{
-                  name: "",
-                  userName: "",
-                  password: "",
-                  confirmPassword: "",
-                  phoneNumber: "",
-                }}
-                onSubmit={(values) => {
-                  // Validation success and needs to call backend
-                }}
-                validationSchema={validationSchema}
-              >
-                {(formikProps) => {
-                  const { errors, handleSubmit, handleChange, touched } =
-                    formikProps;
+          <h2 style={{ fontSize: 48, fontFamily: "Lato", margin: 0 }}>
+            Welcome to Eticket!
+          </h2>
+          <p style={{ color: "rgba(0,0,0,0.5)" }}>
+            Fill these details to sign up
+          </p>
+          <Stack direction="column" spacing={2}>
+            <Formik
+              initialValues={{
+                name: "",
+                userName: "",
+                password: "",
+                confirmPassword: "",
+                phoneNumber: "",
+              }}
+              onSubmit={(values) => {
+                // Validation success and needs to call backend
+              }}
+              validationSchema={validationSchema}
+            >
+              {(formikProps) => {
+                const { errors, handleSubmit, handleChange, touched } =
+                  formikProps;
 
-                  return (
-                    <React.Fragment>
-                      <CustomTextField
-                        label="Name"
-                        variant="outlined"
-                        color="secondary"
-                        error={errors.name && touched.name}
-                        helperText={errors.name || ""}
-                        onChange={(event) => handleChange("name")(event)}
-                      />
+                return (
+                  <React.Fragment>
+                    <CustomTextField
+                      label="Name"
+                      variant="outlined"
+                      color="secondary"
+                      error={errors.name && touched.name}
+                      helperText={errors.name || ""}
+                      onChange={(event) => handleChange("name")(event)}
+                    />
 
-                      <CustomTextField
-                        label="Username"
-                        variant="outlined"
-                        color="secondary"
-                        error={errors.userName && touched.userName}
-                        helperText={errors.userName || ""}
-                        onChange={(event) => handleChange("userName")(event)}
-                      />
+                    <CustomTextField
+                      label="Username"
+                      variant="outlined"
+                      color="secondary"
+                      error={errors.userName && touched.userName}
+                      helperText={errors.userName || ""}
+                      onChange={(event) => handleChange("userName")(event)}
+                    />
 
-                      <CustomTextField
-                        label="Phone Number"
-                        variant="outlined"
-                        color="secondary"
-                        error={errors.phoneNumber && touched.phoneNumber}
-                        helperText={errors.phoneNumber || ""}
-                        onChange={(event) => handleChange("phoneNumber")(event)}
-                      />
+                    <CustomTextField
+                      label="Phone Number"
+                      variant="outlined"
+                      color="secondary"
+                      error={errors.phoneNumber && touched.phoneNumber}
+                      helperText={errors.phoneNumber || ""}
+                      onChange={(event) => handleChange("phoneNumber")(event)}
+                    />
 
-                      <CustomTextField
-                        label="Password"
-                        variant="outlined"
-                        color="secondary"
-                        type="password"
-                        error={errors.password && touched.password}
-                        helperText={errors.password || ""}
-                        onChange={(event) => handleChange("password")(event)}
-                      />
+                    <CustomTextField
+                      label="Password"
+                      variant="outlined"
+                      color="secondary"
+                      type="password"
+                      error={errors.password && touched.password}
+                      helperText={errors.password || ""}
+                      onChange={(event) => handleChange("password")(event)}
+                    />
 
-                      <CustomTextField
-                        label="Confirm Password"
-                        variant="outlined"
-                        color="secondary"
-                        type="password"
-                        error={
-                          errors.confirmPassword && touched.confirmPassword
-                        }
-                        helperText={errors.confirmPassword || ""}
-                        onChange={(event) =>
-                          handleChange("confirmPassword")(event)
-                        }
-                      />
+                    <CustomTextField
+                      label="Confirm Password"
+                      variant="outlined"
+                      color="secondary"
+                      type="password"
+                      error={errors.confirmPassword && touched.confirmPassword}
+                      helperText={errors.confirmPassword || ""}
+                      onChange={(event) =>
+                        handleChange("confirmPassword")(event)
+                      }
+                    />
 
-                      <Button
-                        type="submit"
-                        color="secondary"
-                        variant="contained"
-                        size="large"
-                        onClick={handleSubmit}
-                      >
-                        Sign Up
-                      </Button>
-                    </React.Fragment>
-                  );
-                }}
-              </Formik>
-            </Stack>
-          </form>
+                    <Button
+                      type="submit"
+                      color="secondary"
+                      variant="contained"
+                      size="large"
+                      onClick={handleSubmit}
+                    >
+                      Sign Up
+                    </Button>
+                  </React.Fragment>
+                );
+              }}
+            </Formik>
+          </Stack>
+
           <HeightBox height={15} />
           <div style={{ fontSize: 15, width: 450 }}>
             <Stack direction="row" justifyContent="center" spacing={1}>
