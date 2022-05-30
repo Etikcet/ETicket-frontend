@@ -1,74 +1,71 @@
 import React from "react";
-import HomeNavigationBar from "../../components/HomeNavigationBar";
-import SignUpImageDiv from "../../components/SignUpImage";
+import AccountNavigationBar from "../../components/AccountNavigationBar";
 import { Avatar } from "@mui/material";
 import WhiteSpace from "../../components/WhiteSpace";
 import TextField from "@mui/material/TextField";
+import { Stack } from "@mui/material";
+import HeightBox from "../../components/HeightBox";
+import { styled } from "@mui/system";
+import SIGNUP_IMAGE from "../../assets/signup-image.svg";
+import Footer from "../../components/Footer";
 
 export default function Account() {
   var name = "Tim Tim";
   var email = "tim@gmail.com";
   var phoneNo = "0123456789";
 
-  const divStyle = {
-    padding: "1%",
-    top: "20%",
-    position: "absolute",
-    width: "30%",
-    height: "60%",
-    left: "60%",
-    // backgroundColor: "blue",
-    justifyContent: "center",
-    alignItems: "center",
-    textAlign: "center",
-    // fontSize: "10px",
-    border: "5px solid #9c27b0",
-  };
+  const CustomTextField = styled(TextField)({
+    width: 450,
+  });
+
   return (
-    <div>
-      {/* <HomeNavigationBar /> */}
-      <SignUpImageDiv />
-      <div style={divStyle}>
-        <Avatar {...stringAvatar(name)} />
-        <WhiteSpace />
-        <WhiteSpace />
-        <TextField
-          id="name"
-          label="Name"
-          color="secondary"
-          size="small"
-          fullWidth
-          defaultValue={name}
-          InputProps={{
-            readOnly: true,
-          }}
-        />
-        <WhiteSpace />
-        <TextField
-          id="email"
-          label="email(username)"
-          color="secondary"
-          size="small"
-          fullWidth
-          defaultValue={email}
-          InputProps={{
-            readOnly: true,
-          }}
-        />
-        <WhiteSpace />
-        <TextField
-          id="phoneNo"
-          label="Phone Number"
-          color="secondary"
-          size="small"
-          fullWidth
-          defaultValue={phoneNo}
-          InputProps={{
-            readOnly: true,
-          }}
-        />
+    <Stack direction="column" justifyContent="center" spacing="10">
+      <AccountNavigationBar />
+
+      <div style={{ paddingLeft: 100 }}>
+        <Stack direction="row" spacing={15}>
+          <Stack direction="column" justifyContent="center" spacing={2}>
+            <Avatar {...stringAvatar(name)} />
+            <HeightBox height={20} />
+            <CustomTextField
+              id="name"
+              label="Name"
+              color="secondary"
+              defaultValue={name}
+              InputProps={{
+                readOnly: true,
+              }}
+            />
+            <CustomTextField
+              id="email"
+              label="email(username)"
+              color="secondary"
+              defaultValue={email}
+              InputProps={{
+                readOnly: true,
+              }}
+            />
+            <CustomTextField
+              id="phoneNo"
+              label="Phone Number"
+              color="secondary"
+              defaultValue={phoneNo}
+              InputProps={{
+                readOnly: true,
+              }}
+            />
+          </Stack>
+          <div>
+            <img
+              src={SIGNUP_IMAGE}
+              alt=""
+              style={{ width: "30vw", paddingLeft: "80px", paddingTop: "80px" }}
+            />
+          </div>
+        </Stack>
       </div>
-    </div>
+      <Footer />
+    </Stack>
   );
 }
 

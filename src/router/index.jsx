@@ -3,10 +3,11 @@ import { Routes, Route, BrowserRouter } from "react-router-dom";
 import HomePage from "../pages/HomePage";
 import SignUpPage from "../pages/SignUp";
 import Checkout from "../pages/Checkout";
-import SignIn from "../pages/SignIn"
-import BusRoutes  from "../pages/BusRoutes";
-import AddRoutes  from "../pages/AddRoutes";
-import AddSchedules  from "../pages/AddSchedules";
+import SignIn from "../pages/SignIn";
+import BusRoutes from "../pages/BusRoutes";
+import AddRoutes from "../pages/AddRoutes";
+import AddSchedules from "../pages/AddSchedules";
+import AccountPage from "../pages/AccountPage";
 
 export default function Router() {
   return (
@@ -20,6 +21,7 @@ export default function Router() {
           <Route path="/signin" element={<SignIn />} />
           <Route path="/addroutes" element={<AddRoutes />} />
           <Route path="/addschedules" element={<AddSchedules />} />
+          <Route path="/accountpage" element={<AccountPage />} />
         </Routes>
       </BrowserRouter>
     </div>
