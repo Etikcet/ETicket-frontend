@@ -1,12 +1,10 @@
 import React from "react";
 
 import HomeNavigationBar from "../../components/HomeNavigationBar";
-import BackgroundImage from "./background.jpg";
-
-
 
 export default function Home() {
   return (
+    // document.title='Home page',
     <div>
       <div>
         <HomeNavigationBar />
@@ -16,13 +14,15 @@ export default function Home() {
         <p>find and book your seat</p>
       </div>
 
-      <h1
+      <p
         style={{
           textAlign: "center",
+          fontSize: 30,
+          fontStyle: "italic",
         }}
       >
         Popular Routes
-      </h1>
+      </p>
     </div>
   );
 }

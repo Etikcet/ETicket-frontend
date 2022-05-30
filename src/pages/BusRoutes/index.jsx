@@ -16,6 +16,7 @@ import Container from '@mui/material/Container';
 import Link from '@mui/material/Link';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { CardActionArea } from '@mui/material';
+import HomeNavigationBar from '../../components/HomeNavigationBar';
 
 function Copyright() {
   return (
@@ -36,7 +37,10 @@ const theme = createTheme();
 
 export default function BusRoutes() {
   return (
+    // document.title="Bus routes",
+
     <ThemeProvider theme={theme}>
+      <HomeNavigationBar/>
       <CssBaseline />
       <AppBar position="relative">
         <Toolbar>

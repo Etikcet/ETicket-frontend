@@ -5,6 +5,7 @@ import { styled } from "@mui/material/styles";
 
 const Item = styled(Paper)(({ theme }) => ({
   backgroundColor: theme.palette.mode === "dark" ? "#1A2027" : "#fff",
+
   ...theme.typography.body2,
   padding: theme.spacing(1),
   textAlign: "center",
@@ -13,15 +14,15 @@ const Item = styled(Paper)(({ theme }) => ({
 
 export default function HomeNavigationBar() {
   return (
-    <div>
-      <Stack direction="row" spacing={20}>
+    <div style={{backgroundColor:'grey'}}>
+      <Stack direction="row" spacing={28}>
         <a href="/">
           <Item>ET ETicket</Item>
         </a>
         <a href="/">
           <Item>Booking</Item>
         </a>
-        <a href="/">
+        <a href="/busroutes">
           <Item>Routes</Item>
         </a>
         <a href="/signup">
