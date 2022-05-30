@@ -12,7 +12,7 @@ function getStyels (){
 
 export default function footer(){
     return (
-        <p style={getStyels()}>All right reserved 2022<br></br>ET ticket</p>
+        <p style={getStyels()}>©All right reserved 2022<br></br>ET ticket</p>
     );
 }
 
