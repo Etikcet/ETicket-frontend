@@ -37,10 +37,10 @@ const theme = createTheme();
 
 export default function BusRoutes() {
   return (
-    // document.title="Bus routes",
+
 
     <ThemeProvider theme={theme}>
-      <HomeNavigationBar/>
+
       <CssBaseline />
       <AppBar position="relative">
         <Toolbar>
