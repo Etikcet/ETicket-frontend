@@ -18,20 +18,9 @@ import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { CardActionArea, styled } from '@mui/material';
 import HomeNavigationBar from '../../components/HomeNavigationBar';
 import BusRoute from '../../components/BusRoute';
-//import HomeNavigationBar from 'src/components/HomeNavigationBar'
+import Footer from '../../components/Footer';
 
-function Copyright() {
-  return (
-    <Typography variant="body2" color="text.secondary" align="center">
-      {'Copyright © '}
-      <Link color="inherit" href="https://mui.com/">
-        Your Website
-      </Link>{' '}
-      {new Date().getFullYear()}
-      {'.'}
-    </Typography>
-  );
-}
+//import HomeNavigationBar from 'src/components/HomeNavigationBar'
 
 
 const cards = [1, 2, 3, 4, 5, 6, 7, 8, 9];
@@ -93,7 +82,7 @@ export default function BusRoutes() {
         >
           Something here to give the footer a purpose!
         </Typography>
-        <Copyright />
+        <Footer/>
       </Box>
       {/* End footer */}
     </ThemeProvider>

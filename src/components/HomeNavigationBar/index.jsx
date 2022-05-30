@@ -19,9 +19,6 @@ export default function HomeNavigationBar() {
         <a href="/">
           <Item>ET ETicket</Item>
         </a>
-        <a href="/">
-          <Item>Booking</Item>
-        </a>
         <a href="/busroutes">
           <Item>Routes</Item>
         </a>
