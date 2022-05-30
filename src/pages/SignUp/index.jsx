@@ -1,23 +1,33 @@
-import React from "react";
+import React, { useState } from "react";
 import Logo from "../../components/Logo";
 import TextField from "@mui/material/TextField";
+import { useDispatch } from "react-redux";
+import CircularProgress from "@mui/material/CircularProgress";
 import { Formik } from "formik";
 import { styled } from "@mui/system";
 import Button from "@mui/material/Button";
+import { useNavigate } from "react-router-dom";
 import Link from "@mui/material/Link";
 import SIGNUP_IMAGE from "../../assets/signup-image.svg";
 import { Stack } from "@mui/material";
 import HeightBox from "../../components/HeightBox";
 import * as Yup from "yup";
+import { signUpRequest } from "../../reducers/user";
+import api from "../../api";
 
 const CustomTextField = styled(TextField)({
   width: 450,
 });
 
+const phoneRegExp =
+  /^((\\+[1-9]{1,4}[ \\-]*)|(\\([0-9]{2,3}\\)[ \\-]*)|([0-9]{2,4})[ \\-]*)*?[0-9]{3,4}?[ \\-]*[0-9]{3,4}?$/;
+
 const validationSchema = Yup.object().shape({
   name: Yup.string().required().label("Name"),
   userName: Yup.string().required().label("User Name").min(3).max(36),
-  phoneNumber: Yup.number().required().label("Phone Number").max(10),
+  phoneNumber: Yup.string()
+    .matches(phoneRegExp, "Phone number is not valid")
+    .length(10),
   password: Yup.string()
     .required()
     .min(8)
@@ -43,6 +53,32 @@ const validationSchema = Yup.object().shape({
 });
 
 export default function SignUp() {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
+  const [loading, setLoading] = useState(false);
+
+  async function registerUser(values) {
+    setLoading(true);
+    try {
+      const res = await api.user.registerUser(values);
+      if (res.length === 2) {
+        const data = res[1];
+        if (data?.statusCode === 200) {
+          dispatch(signUpRequest(data.data.user));
+          // navigate("/dashboard");
+        } else {
+          // Error in creating the user account
+          console.log("Error in registration");
+        }
+      }
+      setLoading(false);
+    } catch (error) {
+      // Error in creating the user account
+      setLoading(false);
+    }
+  }
+
   return (
     <div style={{ maxWidth: 1280, marginLeft: "auto", marginRight: "auto" }}>
       <Logo />
@@ -69,6 +105,14 @@ export default function SignUp() {
               }}
               onSubmit={(values) => {
                 // Validation success and needs to call backend
+                const data = {
+                  name: values.name,
+                  username: values.userName,
+                  password: values.password,
+                  phoneNumber: values.phoneNumber,
+                  userType: "CUSTOMER",
+                };
+                registerUser(data);
               }}
               validationSchema={validationSchema}
             >
@@ -133,8 +177,9 @@ export default function SignUp() {
                       variant="contained"
                       size="large"
                       onClick={handleSubmit}
+                      disabled={loading}
                     >
-                      Sign Up
+                      {loading ? <CircularProgress /> : "Sign Up"}
                     </Button>
                   </React.Fragment>
                 );
@@ -151,6 +196,7 @@ export default function SignUp() {
               </Link>
             </Stack>
           </div>
+          <HeightBox height={15} />
         </div>
       </Stack>
     </div>
