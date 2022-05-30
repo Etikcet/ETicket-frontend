@@ -13,7 +13,9 @@ import { Stack } from "@mui/material";
 import HeightBox from "../../components/HeightBox";
 import * as Yup from "yup";
 import { signUpRequest } from "../../reducers/user";
+import SnackBarComponent from "../../components/SnackBarComponent";
 import api from "../../api";
+import { TOKEN_KEY } from "../../constants";
 
 const CustomTextField = styled(TextField)({
   width: 450,
@@ -57,6 +59,11 @@ export default function SignUp() {
   const navigate = useNavigate();
 
   const [loading, setLoading] = useState(false);
+  const [openSnackBar, setOpenSnackBar] = useState(false);
+  const [snackMessage, setSnackMessage] = useState({
+    type: "success",
+    message: "",
+  });
 
   async function registerUser(values) {
     setLoading(true);
@@ -66,21 +73,37 @@ export default function SignUp() {
         const data = res[1];
         if (data?.statusCode === 200) {
           dispatch(signUpRequest(data.data.user));
+          localStorage.setItem(TOKEN_KEY, data.data.token);
           // navigate("/dashboard");
         } else {
           // Error in creating the user account
-          console.log("Error in registration");
+          setSnackMessage({
+            type: "error",
+            message: data.message,
+          });
+          setOpenSnackBar(true);
         }
       }
       setLoading(false);
     } catch (error) {
       // Error in creating the user account
       setLoading(false);
+      setSnackMessage({
+        type: "error",
+        message: "Network Error occured",
+      });
+      setOpenSnackBar(true);
     }
   }
 
   return (
     <div style={{ maxWidth: 1280, marginLeft: "auto", marginRight: "auto" }}>
+      <SnackBarComponent
+        open={openSnackBar}
+        setOpen={setOpenSnackBar}
+        type={snackMessage.type}
+        message={snackMessage.message}
+      />
       <Logo />
       <HeightBox height={50} />
       <Stack direction="row" spacing={15}>
@@ -191,7 +214,7 @@ export default function SignUp() {
           <div style={{ fontSize: 15, width: 450 }}>
             <Stack direction="row" justifyContent="center" spacing={1}>
               <p style={{ margin: 0 }}>Already have an account?</p>
-              <Link href="#" underline="hover" color="black">
+              <Link href="/signin" underline="hover" color="black">
                 Sign In
               </Link>
             </Stack>
