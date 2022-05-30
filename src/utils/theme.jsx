@@ -8,6 +8,9 @@ const theme = createTheme({
     secondary: {
       main: "#fff",
     },
+    error: {
+      main: "#FF4949",
+    },
   },
 });
 
