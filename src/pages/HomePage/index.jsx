@@ -4,7 +4,7 @@ import HomeNavigationBar from "../../components/HomeNavigationBar";
 
 export default function Home() {
   return (
-    // document.title='Home page',
+    document.title='Home page',
     <div>
       <div>
         <HomeNavigationBar />
