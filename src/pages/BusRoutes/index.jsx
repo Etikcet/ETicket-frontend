@@ -15,7 +15,10 @@ import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import Link from '@mui/material/Link';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-import { CardActionArea } from '@mui/material';
+import { CardActionArea, styled } from '@mui/material';
+import HomeNavigationBar from '../../components/HomeNavigationBar';
+import BusRoute from '../../components/BusRoute';
+//import HomeNavigationBar from 'src/components/HomeNavigationBar'
 
 function Copyright() {
   return (
@@ -30,7 +33,9 @@ function Copyright() {
   );
 }
 
+
 const cards = [1, 2, 3, 4, 5, 6, 7, 8, 9];
+
 
 const theme = createTheme();
 
@@ -47,6 +52,7 @@ export default function BusRoutes() {
         </Toolbar>
       </AppBar>
       <main>
+          <HomeNavigationBar/>
         
         <Box
           sx={{
@@ -62,36 +68,10 @@ export default function BusRoutes() {
           <Grid container spacing={4} 
                  >
             {cards.map((card) => (
-              <Grid item key={card} xs={12} sm={6} md={4}>
-                <Card
-                  sx={{ height: '100%', display: 'flex', flexDirection: 'column' }}
-                  style={{width:'300px', borderStyle:'solid', borderColor:'#A97ED5'}}
-                >
-                <Link href='' 
-                 style={{ }}>
-                <CardActionArea>
-                  <CardMedia
-                    component="img"
-                    sx={{
-                      // 16:9
-                      //pt: '56.25%',
-                    }}
-                    style = {{ height: '50%', paddingTop: '20%'}}
-                    image={require("./bus.jpg")}
-                    alt="bus"
-                  />
-                  <CardContent sx={{ flexGrow: 1 }}>
-                    <Typography gutterBottom variant="h5" component="h2">
-                      Start-Finish
-                    </Typography>
-                    <Typography variant="h6">
-                      price
-                    </Typography>
-                  </CardContent>
+              <Grid item key={card} xs={12} sm={6} md={3}>
+
+                <BusRoute/>
                   
-                  </CardActionArea>
-                  </Link>
-                </Card>
               </Grid>
             ))}
           </Grid>
