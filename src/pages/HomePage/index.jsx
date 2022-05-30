@@ -4,20 +4,24 @@ import HomeNavigationBar from "../../components/HomeNavigationBar";
 import Footer from "../../components/Footer";
 import PopularRoutes from "../../components/PopularRoutes";
 import bImage from "../HomePage/bg.png";
+import Logo from "../../components/Logo/index";
 
 export default function Home() {
   return (
     (document.title = "Home page"),
     (
-      <div   style={{
-        backgroundImage: `url(${bImage})`,
-        backgroundRepeat:'no-repeat',
-        height: 300
-        
-      }}>
+      <div
+        style={{
+          backgroundImage: `url(${bImage})`,
+          backgroundRepeat: "no-repeat",
+          height: 380,
+        }}
+      >
         <div>
           <HomeNavigationBar />
-          <div style={{color:"white",padding:30}}>
+          <Logo />
+          <div style={{ color: "white",padding:10}}>
+            
             <p>Your partner in booking</p>
             <h2>It's time to</h2>
             <h1>Discover</h1>
@@ -30,7 +34,7 @@ export default function Home() {
             textAlign: "center",
             fontSize: 30,
             fontStyle: "italic",
-            color:"grey"
+            color: "grey",
           }}
         >
           Popular Routes
