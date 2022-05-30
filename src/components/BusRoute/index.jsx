@@ -1,10 +1,9 @@
 import React  from "react";
 import Card from '@mui/material/Card';
-import CardActions from '@mui/material/CardActions';
 import CardContent from '@mui/material/CardContent';
 import CardMedia from '@mui/material/CardMedia';
 import Link from '@mui/material/Link';
-import { CardActionArea, styled } from '@mui/material';
+import CardActionArea  from '@mui/material/CardActionArea';
 import Typography from '@mui/material/Typography';
 
 export default function BusRoute(props){
@@ -12,7 +11,7 @@ export default function BusRoute(props){
   return(
             <Card
                   sx={{ height: '100%', display: 'flex', flexDirection: 'column' }}
-                  style={{width:'300px', borderStyle:'solid', borderColor:'#A97ED5'}}
+                  style={{width:'300px', borderStyle:'solid', borderColor:'#2155CD'}}
                 >
                 <Link href='/checkout' 
                  style={{textDecoration:'none', color:'#333C83'}}>
