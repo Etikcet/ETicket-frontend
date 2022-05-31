@@ -1,12 +1,7 @@
 import React from "react";
 import HOMEPAGE_IMAGE from "../../assets/homepage.jpg";
-import HomeNavigationBar from "../../components/HomeNavigationBar";
 import Footer from "../../components/Footer";
 import PopularRoutes from "../../components/PopularRoutes";
-import bImage from "../HomePage/bg.png";
-import Logo from "../../components/Logo/index";
-import Search from "../../components/Search";
-
 import HomePageNavigationBar from "../../components/HomePageNavigationBar";
 import HeightBox from "../../components/HeightBox";
 import HomePageRouteSelect from "../../components/HomePageRouteSelect";
@@ -18,7 +13,7 @@ export default function Home() {
         style={{
           backgroundImage: `url(${HOMEPAGE_IMAGE})`,
           backgroundRepeat: "no-repeat",
-          height: "60vh",
+          height: 550,
         }}
       >
         <div
@@ -49,32 +44,9 @@ export default function Home() {
         </div>
       </div>
       <HomePageRouteSelect />
-      {/* <div>
-        <HomeNavigationBar />
-        <Logo />
-        <div style={{ color: "white", padding: 10 }}>
-          <p>Your partner in booking</p>
-          <h2>It's time to</h2>
-          <h1>Discover</h1>
-          <p>find and book your seat</p>
-        </div>
-      </div>
-
-      <Search />
-      <p
-        style={{
-          textAlign: "center",
-          fontSize: 30,
-          fontStyle: "italic",
-          color: "grey",
-        }}
-      >
-        Popular Routes
-      </p>
-
       <PopularRoutes />
-
-      <Footer /> */}
+      <HeightBox height={20} />
+      <Footer />
     </div>
   );
 }
