@@ -43,7 +43,7 @@ const validationSchema = Yup.object().shape({
     )
     .matches(
       /[A-Z]+/,
-      "Passoword should contain at least one uppercase character"
+      "Password should contain at least one uppercase character"
     )
     .matches(
       /[!@#$%^&*()-+]+/,
