@@ -1,18 +1,20 @@
-import React from 'react';
+import React from "react";
+import HeightBox from "../HeightBox";
 
-function getStyels (){
-    return (
-        {
-            textAlign: 'center',
-            backgroundColor: '#3493E8',
-            fontStyle: 'italic'
-        }
-    );
+export default function footer() {
+  return (
+    <div style={{ backgroundColor: "#fff" }}>
+      <HeightBox height={20} />
+      <p
+        style={{
+          textAlign: "center",
+          color: "#000",
+          margin: 0,
+        }}
+      >
+        ©All right reserved 2022<br></br>ET ticket
+      </p>
+      <HeightBox height={20} />
+    </div>
+  );
 }
-
-export default function footer(){
-    return (
-        <p style={getStyels()}>©All right reserved 2022<br></br>ET ticket</p>
-    );
-}
-

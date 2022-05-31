@@ -16,6 +16,7 @@ import { signUpRequest } from "../../reducers/user";
 import SnackBarComponent from "../../components/SnackBarComponent";
 import api from "../../api";
 import { TOKEN_KEY } from "../../constants";
+import Footer from "../../components/Footer";
 
 const CustomTextField = styled(TextField)({
   width: 450,
@@ -42,7 +43,7 @@ const validationSchema = Yup.object().shape({
     )
     .matches(
       /[A-Z]+/,
-      "Passoword should contain at least one uppercase character"
+      "Password should contain at least one uppercase character"
     )
     .matches(
       /[!@#$%^&*()-+]+/,
@@ -105,12 +106,16 @@ export default function SignUp() {
         message={snackMessage.message}
       />
       <Logo />
-      <HeightBox height={50} />
+      <HeightBox height={0} />
       <Stack direction="row" spacing={15}>
         <div>
-          <img src={SIGNUP_IMAGE} alt="" style={{ width: "40vw" }} />
+          <img
+            src={SIGNUP_IMAGE}
+            alt=""
+            style={{ width: "30vw", paddingLeft: "80px", paddingTop: "80px" }}
+          />
         </div>
-        <div>
+        <div style={{ paddingLeft: "50px" }}>
           <h2 style={{ fontSize: 48, fontFamily: "Lato", margin: 0 }}>
             Welcome to Eticket!
           </h2>
@@ -222,6 +227,7 @@ export default function SignUp() {
           <HeightBox height={15} />
         </div>
       </Stack>
+      <Footer />
     </div>
   );
 }
