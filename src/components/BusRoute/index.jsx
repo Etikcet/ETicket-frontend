@@ -19,10 +19,6 @@ export default function BusRoute(props){
                 <CardActionArea>
                   <CardMedia
                     component="img"
-                    sx={{
-                      // 16:9
-                      //pt: '56.25%',
-                    }}
                     style = {{ height: '50%', paddingTop: '20%'}}
                     image={require("./bus.jpg")}
                     alt={'bus'}
