@@ -1,9 +1,17 @@
 import React from "react";
-
+import { styled } from "@mui/system";
 import Stack from "@mui/material/Stack";
 import Button from "@mui/material/Button";
 import { useNavigate } from "react-router-dom";
 import Logo from "../Logo";
+
+const CustomButton = styled(Button)({
+  textTransform: "none",
+  color: "##9c27b0",
+  fontWeight: "bold",
+  fontSize: 15,
+  fontFamily: "Lato",
+});
 
 export default function HomeNavigationBar() {
   const navigate = useNavigate();
@@ -19,27 +27,34 @@ export default function HomeNavigationBar() {
       <div>
         <Logo />
       </div>
-      <div style={{ width: 800 }}></div>
+      <div style={{ width: 750 }}></div>
       <div style={{ paddingTop: 30 }}>
         <Stack spacing={"5%"} direction="row">
-          <Button variant="contained" onClick={() => navigate("/")}>
+          <CustomButton variant="contained" onClick={() => navigate("/")}>
             Home
-          </Button>
-          <Button variant="contained" onClick={() => navigate("/busroutes")}>
+          </CustomButton>
+          <CustomButton
+            variant="contained"
+            onClick={() => navigate("/busroutes")}
+          >
             Routes
-          </Button>
-          <Button variant="contained" onClick={() => navigate("/accountpage")}>
+          </CustomButton>
+          <CustomButton
+            variant="contained"
+            onClick={() => navigate("/bookingview")}
+          >
+            Bookings
+          </CustomButton>
+          <CustomButton
+            variant="contained"
+            onClick={() => navigate("/accountpage")}
+          >
             Account
-          </Button>
-          <Button variant="contained" onClick={() => navigate("/signin")}>
-            signIn
-          </Button>
-          <Button variant="contained" onClick={() => navigate("/signup")}>
-            SignUp
-          </Button>
-          <Button variant="contained" onClick={() => navigate("/help")}>
+          </CustomButton>
+
+          <CustomButton variant="contained" onClick={() => navigate("/help")}>
             help
-          </Button>
+          </CustomButton>
         </Stack>
       </div>
     </div>
