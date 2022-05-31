@@ -6,6 +6,6 @@ export default {
     return resolver(axiosClient.post("/user/signup", userData));
   },
   signinUser(user) {
-    return resolver(axiosClient.get("/user/login", user));
+    return resolver(axiosClient.post("/user/login", user));
   },
 };
