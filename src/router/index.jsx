@@ -22,7 +22,7 @@ export default function Router() {
           <Route path="/signin" element={<SignIn />} />
           <Route path="/addroutes" element={<AddRoutes />} />
           <Route path="/addschedules" element={<AddSchedules />} />
-          <Route path="/accountpage" element={<AccountPage />} />
+          <Route path="/dashboard" element={<AccountPage />} />
           <Route path="/bookingview" element={<BookingView />} />
         </Routes>
       </BrowserRouter>
