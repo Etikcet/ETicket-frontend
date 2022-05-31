@@ -7,7 +7,7 @@ export default function Logo() {
     fontFamily: "Lato",
   };
   return (
-    <div style={{ display: "flex", flexDirection: "row" }}>
+    <div style={{ display: "flex", flexDirection: "row", paddingLeft: 20 }}>
       <h1 style={myStyle}>ET</h1>
       <div style={{ width: 10 }} />
       <h1 style={{ fontSize: 36 }}>Etikcet</h1>
