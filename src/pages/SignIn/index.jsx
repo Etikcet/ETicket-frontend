@@ -66,7 +66,7 @@ export default function SignIn() {
         localStorage.setItem(ETICKET_USER_DETAILS, userObj);
         localStorage.setItem(TOKEN_KEY, `Bearer ${data?.data?.token}`);
         dispatch(loggingRequest(data.data));
-        // Navigate to the dashboard
+        navigate("/dashboard");
       } else if (status === 400) {
         setSnackMessage({
           type: "error",

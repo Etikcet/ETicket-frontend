@@ -77,8 +77,7 @@ export default function SignUp() {
           const userObj = JSON.stringify(data.data.user);
           localStorage.setItem(ETICKET_USER_DETAILS, userObj);
           localStorage.setItem(TOKEN_KEY, `Bearer ${data?.data?.token}`);
-
-          // navigate("/dashboard");
+          navigate("/dashboard");
         } else {
           // Error in creating the user account
           setSnackMessage({
