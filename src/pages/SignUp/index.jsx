@@ -15,7 +15,7 @@ import * as Yup from "yup";
 import { signUpRequest } from "../../reducers/user";
 import SnackBarComponent from "../../components/SnackBarComponent";
 import api from "../../api";
-import { TOKEN_KEY } from "../../constants";
+import { TOKEN_KEY, ETICKET_USER_DETAILS } from "../../constants";
 import Footer from "../../components/Footer";
 
 const CustomTextField = styled(TextField)({
@@ -74,8 +74,10 @@ export default function SignUp() {
         const data = res[1];
         if (data?.statusCode === 200) {
           dispatch(signUpRequest(data.data.user));
-          localStorage.setItem(TOKEN_KEY, data.data.token);
-          // navigate("/dashboard");
+          const userObj = JSON.stringify(data.data.user);
+          localStorage.setItem(ETICKET_USER_DETAILS, userObj);
+          localStorage.setItem(TOKEN_KEY, `Bearer ${data?.data?.token}`);
+          navigate("/dashboard");
         } else {
           // Error in creating the user account
           setSnackMessage({

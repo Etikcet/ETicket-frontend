@@ -27,9 +27,10 @@ export default function BusRoutes() {
     
       <Toolbar>
           <Logo/>
-        </Toolbar>
+      </Toolbar>
+      
       <main>
-          <HomeNavigationBar/>
+        <HomeNavigationBar/>
         
         <Box
           sx={{
@@ -37,26 +38,20 @@ export default function BusRoutes() {
             pt: 3,
             pb: 3,
           }}
-        >
-          
+        >  
         </Box>
+
         <Container sx={{ py: 8 }} maxWidth="md" style= {{ maxWidth: '1300px'}}>
-          {/* End hero unit */}
-          <Grid container spacing={4} 
-                 >
+          <Grid container spacing={4} >
             {cards.map((card) => (
               <Grid item key={card} xs={12} sm={6} md={3}>
-
                 <BusRoute/>
-                  
               </Grid>
             ))}
           </Grid>
-        </Container>
+        </Container>  
       </main>
-      
       <Box>
-        
         <Footer/>
       </Box>
       

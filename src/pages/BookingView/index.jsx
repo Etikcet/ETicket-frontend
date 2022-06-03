@@ -27,7 +27,7 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
   '&:nth-of-type(odd)': {
     backgroundColor: theme.palette.action.hover,
   },
-  // hide last border
+
   '&:last-child td, &:last-child th': {
     border: 0,
   },
@@ -52,7 +52,6 @@ export default function CustomizedTables() {
 
       <AppBar position="relative">
         <Toolbar style={{backgroundColor:'#242F9B'}}>
-          
           <Logo />
         </Toolbar>
       </AppBar>

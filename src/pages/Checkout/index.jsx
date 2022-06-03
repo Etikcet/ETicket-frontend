@@ -15,6 +15,11 @@ import AddressForm from './AddressForm';
 import PaymentForm from './PaymentForm';
 import Review from './Review';
 import Logo from '../../components/Logo';
+import { style, width } from '@mui/system';
+import { Circle } from '@mui/icons-material';
+import { Card, CardContent, CardMedia } from '@mui/material';
+import DirectionsBusFilledSharpIcon from '@mui/icons-material/DirectionsBusFilledSharp';
+
 
 
 const steps = ['Booking details', 'Payment details', 'Review your booking'];
@@ -46,7 +51,7 @@ export default function Checkout() {
   };
 
   return (
-    <ThemeProvider theme={theme}>
+    <ThemeProvider theme={theme} >
       <CssBaseline />
       <AppBar
         position="absolute"
@@ -61,18 +66,42 @@ export default function Checkout() {
           <Logo/>
         </Toolbar>
       </AppBar>
-      <Container component="main" maxWidth="sm" sx={{ mb: 4 }}>
-        <Paper variant="outlined" sx={{ my: { xs: 3, md: 6 }, p: { xs: 2, md: 3 } }}>
+      <Container style={{ float:"left", width:"50%"}}>
+        
+          <CardMedia 
+          component="img"
+          style={{ height: "300px" }}
+          image={require("./busstop.png")}
+          alt={"bus"}
+          />
+          <CardContent>
+            <div style={{textAlign:"center"}}> <h3 style={{display:"inline-block"}}>Bus No</h3></div>
+            <div style={{textAlign:"center"}}> <h3 style={{display:"inline-block"}}>Departure Time</h3></div>
+            <div style={{textAlign:"center"}}> <h3 style={{display:"inline-block"}}>Arrival Time</h3></div>
+            <div style={{textAlign:"center"}}> <h3 style={{display:"inline-block"}}>Price</h3></div>
+            <div style={{textAlign:"center"}}> <h3 style={{display:"inline-block"}}>Contact No</h3></div>
+
+          </CardContent>
+        
+
+      </Container>
+
+      <Container component="main" maxWidth="sm" sx={{ mb: 4 }} style={{ float:"right", marginRight:"100px"}}>
+        <Paper variant="outlined" sx={{ my: { xs: 3, md: 6 }, p: { xs: 2, md: 3 } }}
+          style={{borderColor:"#9C27B0"}}>
+          
           <Typography component="h1" variant="h4" align="center">
             Checkout
           </Typography>
-          <Stepper activeStep={activeStep} sx={{ pt: 3, pb: 5 }}>
+          
+          <Stepper activeStep={activeStep} sx={{ pt: 3, pb: 5 }} >
             {steps.map((label) => (
-              <Step key={label}>
+              <Step key={label} >
                 <StepLabel>{label}</StepLabel>
               </Step>
             ))}
           </Stepper>
+          
           <React.Fragment>
             {activeStep === steps.length ? (
               <React.Fragment>

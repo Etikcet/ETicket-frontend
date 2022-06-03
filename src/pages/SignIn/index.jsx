@@ -12,19 +12,35 @@ import LOGIN_IMAGE from "../../assets/login-image.svg";
 import { Stack } from "@mui/material";
 import HeightBox from "../../components/HeightBox";
 import * as Yup from "yup";
-import { signUpRequest } from "../../reducers/user";
+import { loggingRequest } from "../../reducers/user";
 import SnackBarComponent from "../../components/SnackBarComponent";
 import api from "../../api";
-import { TOKEN_KEY } from "../../constants";
-import Footer from "../../components/Footer";
+import { ETICKET_USER_DETAILS, TOKEN_KEY } from "../../constants";
 
 const CustomTextField = styled(TextField)({
   width: 350,
 });
 
 const validationSchema = Yup.object().shape({
-  userName: Yup.string().required().label("User Name"),
-  password: Yup.string().required().label("Password"),
+  userName: Yup.string().required().label("User Name").min(3).max(36),
+  password: Yup.string()
+    .required()
+    .min(8)
+    .max(15)
+    .label("Password")
+    .matches(/\d+/, "Password should contain at least one number")
+    .matches(
+      /[a-z]+/,
+      "Password should contain at least one lowercase character"
+    )
+    .matches(
+      /[A-Z]+/,
+      "Password should contain at least one uppercase character"
+    )
+    .matches(
+      /[!@#$%^&*()-+]+/,
+      "Password should contain at least one special character"
+    ),
 });
 
 export default function SignIn() {
@@ -38,7 +54,43 @@ export default function SignIn() {
     message: "",
   });
 
-  async function loginUser(values) {}
+  async function loginUser(values) {
+    setLoading(true);
+    try {
+      const res = await api.user.signinUser(values);
+      const status = res[0];
+      const data = res[1];
+
+      if (data?.statusCode === 200) {
+        const userObj = JSON.stringify(data.data.user);
+        localStorage.setItem(ETICKET_USER_DETAILS, userObj);
+        localStorage.setItem(TOKEN_KEY, `Bearer ${data?.data?.token}`);
+        dispatch(loggingRequest(data.data));
+        navigate("/dashboard");
+      } else if (status === 400) {
+        setSnackMessage({
+          type: "error",
+          message: "Invalid username or password",
+        });
+        setOpenSnackBar(true);
+      } else {
+        setSnackMessage({
+          type: "error",
+          message: "Internal Server Error",
+        });
+        setOpenSnackBar(true);
+      }
+
+      setLoading(false);
+    } catch (error) {
+      setSnackMessage({
+        type: "error",
+        message: "Network error occured",
+      });
+      setOpenSnackBar(true);
+      setLoading(false);
+    }
+  }
 
   return (
     <div style={{ maxWidth: 1280, marginLeft: "auto", marginRight: "auto" }}>
@@ -51,7 +103,7 @@ export default function SignIn() {
       <Logo />
       <HeightBox height={30} />
       <Stack direction="row" spacing={15}>
-        <div style={{ paddingLeft: "100px" }}>
+        <div style={{ paddingLeft: "100px", paddingTop: 50 }}>
           <h2 style={{ fontSize: 48, fontFamily: "Lato", margin: 0 }}>
             Welcome Back!
           </h2>
@@ -65,11 +117,9 @@ export default function SignIn() {
                 password: "",
               }}
               onSubmit={(values) => {
-                // Validation success and needs to call backend
                 const data = {
                   username: values.userName,
                   password: values.password,
-                  // userType: "CUSTOMER",
                 };
                 loginUser(data);
               }}
@@ -131,7 +181,6 @@ export default function SignIn() {
           <img src={LOGIN_IMAGE} alt="" style={{ width: "40vw" }} />
         </div>
       </Stack>
-      <Footer />
     </div>
   );
 }

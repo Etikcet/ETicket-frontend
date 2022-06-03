@@ -8,7 +8,7 @@ export const axiosClient = axios.create({
 });
 
 axiosClient.interceptors.request.use(function (config) {
-  config.headers.token = resolve_accessToken();
+  config.headers.Authorization = resolve_accessToken();
   return config;
 });
 
@@ -21,6 +21,7 @@ axiosClient.interceptors.request.use(function (config) {
 export async function resolver(axiosResponse) {
   try {
     const response = await axiosResponse;
+
     return [response.status, response.data];
   } catch (e) {
     const response = e.response;
