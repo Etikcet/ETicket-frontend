@@ -1,13 +1,15 @@
 import * as React from "react";
 import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
+import { useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 import Container from "@mui/material/Container";
 import AccountNavigationBar from "../../components/AccountNavigationBar";
-import HomeNavigationBar from "../../components/HomeNavigationBar";
 import BusRoute from "../../components/BusRoute";
 import Footer from "../../components/Footer";
+import { Button } from "@mui/material";
+import HeightBox from "../../components/HeightBox";
 
-const cards = [1, 2, 3, 4, 5, 6, 7, 8, 9];
 const routes = [
   {
     id: "1",
@@ -60,21 +62,28 @@ const routes = [
 ];
 
 export default function BusRoutes() {
+  const navigate = useNavigate();
+  const userIsAdmin = useSelector((state) => state.user?.isAdmin);
   return (
     <div>
       <AccountNavigationBar />
 
-      <main>
-        <Container sx={{ py: 8 }} maxWidth="md" style={{ maxWidth: "1300px" }}>
-          <Grid container spacing={4}>
-            {routes.map((card) => (
-              <Grid item key={card.id} xs={12} sm={6} md={3}>
-                <BusRoute route={card} />
-              </Grid>
-            ))}
-          </Grid>
-        </Container>
-      </main>
+      <Container sx={{ py: 8 }} maxWidth="md" style={{ maxWidth: "1280px" }}>
+        {userIsAdmin && (
+          <Button onClick={() => navigate("/addroutes")} variant="contained">
+            Add Route
+          </Button>
+        )}
+        {userIsAdmin && <HeightBox height={40} />}
+        <Grid container spacing={4}>
+          {routes.map((card) => (
+            <Grid item key={card.id} xs={12} sm={6} md={3}>
+              <BusRoute route={card} />
+            </Grid>
+          ))}
+        </Grid>
+      </Container>
+
       <Box>
         <Footer />
       </Box>

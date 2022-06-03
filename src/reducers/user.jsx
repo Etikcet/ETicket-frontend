@@ -9,7 +9,8 @@ const initialState = {
   ID: userObj?.id,
   username: userObj?.username,
   phoneNumber: userObj?.phoneNumber,
-  userType: userObj?.userType,
+  userType: userObj?.user_type,
+  isAdmin: userObj?.user_type === "ADMIN",
 };
 
 export const userSlice = createSlice({
@@ -22,6 +23,7 @@ export const userSlice = createSlice({
       state.username = action.payload.user.username;
       state.phoneNumber = action.payload.user.phone_number;
       state.userType = action.payload.user.user_type;
+      state.isAdmin = action.payload.user.user_type === "ADMIN";
     },
     signUpRequest: (state, action) => {
       state.auth = true;
@@ -29,6 +31,7 @@ export const userSlice = createSlice({
       state.username = action.payload.username;
       state.phoneNumber = action.payload.phoneNumber;
       state.userType = action.payload.userType;
+      state.isAdmin = action.payload.userType === "ADMIN";
     },
     logOurRequest: (state) => {
       state.auth = false;
@@ -36,6 +39,7 @@ export const userSlice = createSlice({
       state.username = null;
       state.phoneNumber = null;
       state.userType = null;
+      state.isAdmin = false;
     },
   },
 });
