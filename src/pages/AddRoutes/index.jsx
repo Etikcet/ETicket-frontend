@@ -1,47 +1,23 @@
 import * as React from "react";
-import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
 import CssBaseline from "@mui/material/CssBaseline";
 import TextField from "@mui/material/TextField";
-import FormControlLabel from "@mui/material/FormControlLabel";
-import Checkbox from "@mui/material/Checkbox";
-import Link from "@mui/material/Link";
-import Grid from "@mui/material/Grid";
+import AccountNavigationBar from "../../components/AccountNavigationBar";
 import Box from "@mui/material/Box";
-// import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
-import { createTheme, ThemeProvider } from "@mui/material/styles";
-import HomeNavigationBar from "../../components/HomeNavigationBar";
-import AppBar from "@mui/material/AppBar";
-import Toolbar from "@mui/material/Toolbar";
-
-const theme = createTheme();
+import HeightBox from "../../components/HeightBox";
 
 export default function AddRoute() {
   const handleSubmit = (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
-    console.log({
-      route: data.get("route"),
-      station1: data.get("station1"),
-      station1: data.get("station2"),
-    });
   };
 
   return (
-    <ThemeProvider theme={theme}>
-      <CssBaseline />
-      <AppBar position="relative">
-        <Toolbar>
-          <Typography variant="h6" color="inherit" noWrap>
-            ETikcet
-          </Typography>
-        </Toolbar>
-      </AppBar>
-      <main>
-        <HomeNavigationBar />
-      </main>
+    <div>
+      <AccountNavigationBar />
+      <HeightBox height={40} />
       <Container component="main" maxWidth="xs">
         <CssBaseline />
         <Box
@@ -52,7 +28,7 @@ export default function AddRoute() {
             alignItems: "center",
           }}
         >
-          <Typography component="h1" variant="h5">
+          <Typography variant="h4" textAlign="left">
             Add Route
           </Typography>
           <Box
@@ -106,6 +82,6 @@ export default function AddRoute() {
           </Box>
         </Box>
       </Container>
-    </ThemeProvider>
+    </div>
   );
 }

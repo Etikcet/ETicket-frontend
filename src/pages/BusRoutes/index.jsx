@@ -1,60 +1,83 @@
-import * as React from 'react';
-import AppBar from '@mui/material/AppBar';
-import CssBaseline from '@mui/material/CssBaseline';
-import Grid from '@mui/material/Grid';
-import Box from '@mui/material/Box';
-import Toolbar from '@mui/material/Toolbar';
-import Container from '@mui/material/Container';
-import { createTheme, ThemeProvider } from '@mui/material/styles';
-import HomeNavigationBar from '../../components/HomeNavigationBar';
-import BusRoute from '../../components/BusRoute';
-import Footer from '../../components/Footer';
-import Logo from '../../components/Logo';
-
+import * as React from "react";
+import Grid from "@mui/material/Grid";
+import Box from "@mui/material/Box";
+import Container from "@mui/material/Container";
+import AccountNavigationBar from "../../components/AccountNavigationBar";
+import HomeNavigationBar from "../../components/HomeNavigationBar";
+import BusRoute from "../../components/BusRoute";
+import Footer from "../../components/Footer";
 
 const cards = [1, 2, 3, 4, 5, 6, 7, 8, 9];
-
-
-const theme = createTheme();
+const routes = [
+  {
+    id: "1",
+    start: "Matara",
+    finish: "Colombo",
+    price: "Rs:1300",
+    arrival: "10.30am",
+    departure: "10.45am",
+  },
+  {
+    id: "2",
+    start: "Matara",
+    finish: "Colombo",
+    price: "Rs:1300",
+    arrival: "10.30am",
+    departure: "10.45am",
+  },
+  {
+    id: "3",
+    start: "Matara",
+    finish: "Colombo",
+    price: "Rs:1300",
+    arrival: "10.30am",
+    departure: "10.45am",
+  },
+  {
+    id: "4",
+    start: "Matara",
+    finish: "Colombo",
+    price: "Rs:1300",
+    arrival: "10.30am",
+    departure: "10.45am",
+  },
+  {
+    id: "5",
+    start: "Matara",
+    finish: "Colombo",
+    price: "Rs:1300",
+    arrival: "10.30am",
+    departure: "10.45am",
+  },
+  {
+    id: "6",
+    start: "Matara",
+    finish: "Colombo",
+    price: "Rs:1300",
+    arrival: "10.30am",
+    departure: "10.45am",
+  },
+];
 
 export default function BusRoutes() {
   return (
+    <div>
+      <AccountNavigationBar />
 
-
-    <ThemeProvider theme={theme}>
-
-      <CssBaseline />
-    
-      <Toolbar>
-          <Logo/>
-      </Toolbar>
-      
       <main>
-        <HomeNavigationBar/>
-        
-        <Box
-          sx={{
-            bgcolor: 'background.paper',
-            pt: 3,
-            pb: 3,
-          }}
-        >  
-        </Box>
-
-        <Container sx={{ py: 8 }} maxWidth="md" style= {{ maxWidth: '1300px'}}>
-          <Grid container spacing={4} >
-            {cards.map((card) => (
-              <Grid item key={card} xs={12} sm={6} md={3}>
-                <BusRoute/>
+        <Container sx={{ py: 8 }} maxWidth="md" style={{ maxWidth: "1300px" }}>
+          <Grid container spacing={4}>
+            {routes.map((card) => (
+              <Grid item key={card.id} xs={12} sm={6} md={3}>
+                <BusRoute route={card} />
               </Grid>
             ))}
           </Grid>
-        </Container>  
+        </Container>
       </main>
       <Box>
-        <Footer/>
+        <Footer />
       </Box>
-      
-    </ThemeProvider>
+    </div>
   );
 }
