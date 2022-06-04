@@ -1,47 +1,83 @@
-import * as React from "react";
-import Avatar from "@mui/material/Avatar";
+import React, { useState } from "react";
 import Button from "@mui/material/Button";
 import CssBaseline from "@mui/material/CssBaseline";
 import TextField from "@mui/material/TextField";
-import FormControlLabel from "@mui/material/FormControlLabel";
-import Checkbox from "@mui/material/Checkbox";
-import Link from "@mui/material/Link";
-import Grid from "@mui/material/Grid";
+import { useNavigate } from "react-router-dom";
+import { Formik } from "formik";
+import CircularProgress from "@mui/material/CircularProgress";
+import * as Yup from "yup";
+import AccountNavigationBar from "../../components/AccountNavigationBar";
+import SnackBarComponent from "../../components/SnackBarComponent";
 import Box from "@mui/material/Box";
-// import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
-import { createTheme, ThemeProvider } from "@mui/material/styles";
-import HomeNavigationBar from "../../components/HomeNavigationBar";
-import AppBar from "@mui/material/AppBar";
-import Toolbar from "@mui/material/Toolbar";
+import HeightBox from "../../components/HeightBox";
+import api from "../../api";
 
-const theme = createTheme();
+const validationSchema = Yup.object().shape({
+  busId: Yup.string().required().label("Bus Id"),
+  start: Yup.string().required().label("Starting Station"),
+  end: Yup.string().required().label("Ending Station"),
+});
 
 export default function AddRoute() {
-  const handleSubmit = (event) => {
-    event.preventDefault();
-    const data = new FormData(event.currentTarget);
-    console.log({
-      route: data.get("route"),
-      station1: data.get("station1"),
-      station1: data.get("station2"),
-    });
-  };
+  const [openSnackBar, setOpenSnackBar] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [snackMessage, setSnackMessage] = useState({
+    message: "",
+    type: "",
+  });
+  const navigate = useNavigate();
+
+  async function addRoute(values) {
+    setLoading(true);
+    const data = {
+      ID: values.busId,
+      start: values.start,
+      finish: values.end,
+    };
+    try {
+      const res = await api.route.addRoute(data);
+      const resData = res[1];
+      setLoading(false);
+      if (resData?.statusCode === 201) {
+        setSnackMessage({
+          type: "success",
+          message: "Succesfully added the route!",
+        });
+        setOpenSnackBar(true);
+        return true;
+      } else {
+        // Error in adding the route
+        setSnackMessage({
+          type: "error",
+          message: "Error in adding the route",
+        });
+        setOpenSnackBar(true);
+        return false;
+      }
+    } catch (error) {
+      setLoading(false);
+      // Error in adding the route
+      setSnackMessage({
+        type: "error",
+        message: "Error in adding the route",
+      });
+      setOpenSnackBar(true);
+      return false;
+    }
+  }
 
   return (
-    <ThemeProvider theme={theme}>
-      <CssBaseline />
-      <AppBar position="relative">
-        <Toolbar>
-          <Typography variant="h6" color="inherit" noWrap>
-            ETikcet
-          </Typography>
-        </Toolbar>
-      </AppBar>
-      <main>
-        <HomeNavigationBar />
-      </main>
+    <div>
+      <SnackBarComponent
+        open={openSnackBar}
+        message={snackMessage.message}
+        type={snackMessage.type}
+        setOpen={setOpenSnackBar}
+      />
+      <AccountNavigationBar />
+      <HeightBox height={40} />
       <Container component="main" maxWidth="xs">
         <CssBaseline />
         <Box
@@ -52,60 +88,84 @@ export default function AddRoute() {
             alignItems: "center",
           }}
         >
-          <Typography component="h1" variant="h5">
+          <Typography variant="h4" textAlign="left">
             Add Route
           </Typography>
-          <Box
-            component="form"
-            onSubmit={handleSubmit}
-            noValidate
-            sx={{ mt: 1 }}
+          <Formik
+            initialValues={{
+              busId: "",
+              start: "",
+              end: "",
+            }}
+            onSubmit={(values, actions) => {
+              addRoute(values).then((res) => {
+                if (res) {
+                  actions.resetForm();
+                }
+              });
+            }}
+            validationSchema={validationSchema}
           >
-            <TextField
-              margin="normal"
-              required
-              fullWidth
-              name="station1"
-              label="Station 1"
-              id="station1"
-            />
-            <TextField
-              margin="normal"
-              required
-              fullWidth
-              name="station2"
-              label="Station 2"
-              id="station2"
-            />
-            <TextField
-              margin="normal"
-              required
-              fullWidth
-              name="price"
-              label="Price"
-              id="price"
-            />
+            {({ errors, handleSubmit, handleChange, touched, values }) => {
+              return (
+                <React.Fragment>
+                  <TextField
+                    margin="normal"
+                    required
+                    fullWidth
+                    error={touched.busId && errors.busId}
+                    helperText={touched.busId ? errors.busId : ""}
+                    value={values.busId}
+                    label="Bus ID"
+                    onChange={handleChange("busId")}
+                  />
+                  <TextField
+                    margin="normal"
+                    fullWidth
+                    name="station1"
+                    label="Starting Station"
+                    error={touched.start && errors.start}
+                    helperText={touched.start ? errors.start : ""}
+                    value={values.start}
+                    onChange={handleChange("start")}
+                  />
+                  <TextField
+                    margin="normal"
+                    required
+                    fullWidth
+                    label="Ending Station"
+                    error={touched.end && errors.end}
+                    helperText={touched.end ? errors.end : ""}
+                    value={values.end}
+                    onChange={handleChange("end")}
+                  />
 
-            <Button
-              type="submit"
-              fullWidth
-              variant="contained"
-              sx={{ mt: 2, mb: 1 }}
-            >
-              Add Route
-            </Button>
-            <Button
-              type="submit"
-              fullWidth
-              variant="contained"
-              sx={{ mt: 2, mb: 1 }}
-              href="../../BusRoutes"
-            >
-              Back
-            </Button>
-          </Box>
+                  <Button
+                    onClick={() => {
+                      handleSubmit();
+                    }}
+                    disabled={loading}
+                    fullWidth
+                    variant="contained"
+                  >
+                    {loading ? <CircularProgress /> : " Add Route"}
+                  </Button>
+                  <HeightBox height={20} />
+                  <Button
+                    fullWidth
+                    disabled={loading}
+                    onClick={() => navigate("/addroutes")}
+                    variant="contained"
+                    href="../../BusRoutes"
+                  >
+                    Back
+                  </Button>
+                </React.Fragment>
+              );
+            }}
+          </Formik>
         </Box>
       </Container>
-    </ThemeProvider>
+    </div>
   );
 }

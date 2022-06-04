@@ -18,7 +18,7 @@ const CustomButton = styled(Button)({
   },
 });
 
-export default function HomeNavigationBar() {
+export default function AccountNavigationBar() {
   const navigate = useNavigate();
 
   return (

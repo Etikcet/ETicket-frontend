@@ -5,6 +5,7 @@ import CardMedia from "@mui/material/CardMedia";
 import Link from "@mui/material/Link";
 import CardActionArea from "@mui/material/CardActionArea";
 import Typography from "@mui/material/Typography";
+import BUSIMAGE from "./bus.jpg";
 
 export default function BusRoute(props) {
   const { route } = props;
@@ -18,7 +19,7 @@ export default function BusRoute(props) {
           <CardMedia
             component="img"
             style={{ height: "50%", paddingTop: "20%" }}
-            image={require("./bus.jpg")}
+            image={BUSIMAGE}
             alt={"bus"}
           />
           <CardContent sx={{ flexGrow: 1 }}>
