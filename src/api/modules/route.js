@@ -5,4 +5,7 @@ export default {
   addRoute(routeData) {
     return resolver(axiosClient.post("/route/add", routeData));
   },
+  getAllRoutes() {
+    return resolver(axiosClient.get("/route/getall"));
+  },
 };
