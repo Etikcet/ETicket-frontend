@@ -10,6 +10,7 @@ import Paper from "@mui/material/Paper";
 import { Box } from "@mui/system";
 import AccountNavigationBar from "../../components/AccountNavigationBar";
 import HeightBox from "../../components/HeightBox";
+import BookingSelect from "../../components/BookingSelect";
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
@@ -48,13 +49,16 @@ export default function CustomizedTables() {
     <main>
       <AccountNavigationBar />
       <HeightBox height={40} />
+      <p style={{ fontFamily: "Lato", marginLeft: 30, fontSize: 25 }}>
+        Add New Booking
+      </p>
+      <BookingSelect />
       <TableContainer component={Paper}>
         <Box padding="20px">
-          <Table
-            sx={{ minWidth: 700 }}
-            aria-label="customized table"
-            style={{ borderStyle: "solid" }}
-          >
+          <p style={{ fontFamily: "Lato", marginLeft: 20, fontSize: 25 }}>
+            Previous Bookings
+          </p>
+          <Table sx={{ minWidth: 700 }} style={{ borderStyle: "solid" }}>
             <TableHead>
               <TableRow>
                 <StyledTableCell width={"150px"}>User Name</StyledTableCell>

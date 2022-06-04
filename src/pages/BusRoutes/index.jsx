@@ -20,7 +20,7 @@ export default function BusRoutes() {
     async function getAllRoutes() {
       try {
         const [code, data] = await api.route.getAllRoutes();
-        if (code === 200 && data.statusCode === 201) {
+        if (code === 200 && data?.data?.statusCode === 201) {
           setAllRoutes(data.data.routes);
         }
       } catch (error) {}

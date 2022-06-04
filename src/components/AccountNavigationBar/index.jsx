@@ -71,7 +71,7 @@ export default function AccountNavigationBar() {
             disableElevation
             onClick={() => navigate("/help")}
           >
-            help
+            Help
           </CustomButton>
         </Stack>
       </div>
