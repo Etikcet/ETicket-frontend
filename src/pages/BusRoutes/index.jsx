@@ -9,6 +9,7 @@ import BusRoute from "../../components/BusRoute";
 import Footer from "../../components/Footer";
 import { Button } from "@mui/material";
 import HeightBox from "../../components/HeightBox";
+import api from "../../api";
 
 const routes = [
   {
@@ -64,6 +65,19 @@ const routes = [
 export default function BusRoutes() {
   const navigate = useNavigate();
   const userIsAdmin = useSelector((state) => state.user?.isAdmin);
+  const [allRoutes, setAllRoutes] = React.useState([]);
+
+  React.useEffect(() => {
+    async function getAllRoutes() {
+      try {
+        const [code, data] = await api.route.getAllRoutes();
+        if (code === 200 && data.statusCode === 201) {
+          setAllRoutes(data.data.routes);
+        }
+      } catch (error) {}
+    }
+    getAllRoutes();
+  }, []);
   return (
     <div>
       <AccountNavigationBar />
@@ -76,7 +90,7 @@ export default function BusRoutes() {
         )}
         {userIsAdmin && <HeightBox height={40} />}
         <Grid container spacing={4}>
-          {routes.map((card) => (
+          {allRoutes.map((card) => (
             <Grid item key={card.id} xs={12} sm={6} md={3}>
               <BusRoute route={card} />
             </Grid>
