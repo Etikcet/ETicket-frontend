@@ -32,7 +32,7 @@ export default function BusRoute(props) {
               {route.start} - {route.finish}
             </Typography>
             <Typography variant="h6" style={{ fontFamily: "Lato" }}>
-              {route.price}
+              Bus id: {route.id}
             </Typography>
             <Typography variant="h6" style={{ fontFamily: "Lato" }}>
               {route.arrival}
