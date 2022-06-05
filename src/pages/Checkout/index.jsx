@@ -114,18 +114,18 @@ export default function Checkout() {
               <React.Fragment>
                 {getStepContent(activeStep)}
                 <Box sx={{ display: 'flex', justifyContent: 'flex-end' }}>
-                  {activeStep !== 0 && (
-                    <Button onClick={handleBack} sx={{ mt: 3, ml: 1 }}>
+                {activeStep !== 0 && (
+                    <Button onClick={handleBack} sx={{ mt: 3, ml: 1 }} color="secondary">
                       Back
                     </Button>
                   )}
-
                   <Button
+                    color='secondary'
                     variant="contained"
                     onClick={handleNext}
                     sx={{ mt: 3, ml: 1 }}
                   >
-                    {activeStep === steps.length - 1 ? 'Confirm' : 'Next'}
+                    {activeStep === steps.length - 1 ? 'Place order' : 'Next'}
                   </Button>
                 </Box>
               </React.Fragment>
