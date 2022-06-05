@@ -1,12 +1,30 @@
-import React from "react";
+import React, { useState } from "react";
 import HOMEPAGE_IMAGE from "../../assets/homepage.jpg";
 import Footer from "../../components/Footer";
-import PopularRoutes from "../../components/PopularRoutes";
+import RoutesView from "../../components/RoutesView";
 import HomePageNavigationBar from "../../components/HomePageNavigationBar";
 import HeightBox from "../../components/HeightBox";
 import HomePageRouteSelect from "../../components/HomePageRouteSelect";
+import api from "../../api";
 
 export default function Home() {
+  const [stations, setStations] = useState([]);
+  const [searchedData, setSearchedData] = useState([]);
+  const [routesSearched, setRoutesSearched] = useState(false);
+  const [popularRoutes, setPopularRoutes] = useState([]);
+
+  React.useEffect(() => {
+    async function getAllStations() {
+      try {
+        const [code, res] = await api.route.getAllStations();
+        if (code === 200) {
+          setStations(res?.data);
+        }
+      } catch (error) {}
+    }
+    getAllStations();
+  }, []);
+
   return (
     <div>
       <div
@@ -43,8 +61,16 @@ export default function Home() {
           </div>
         </div>
       </div>
-      <HomePageRouteSelect />
-      <PopularRoutes />
+      <HomePageRouteSelect
+        stations={stations}
+        setSearchedData={setSearchedData}
+        setRoutesSearched={setRoutesSearched}
+      />
+      {routesSearched ? (
+        <RoutesView routes={searchedData} title="Matching Routes" />
+      ) : (
+        <RoutesView routes={popularRoutes} title="Popular Routes" />
+      )}
       <HeightBox height={20} />
       <Footer />
     </div>

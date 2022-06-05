@@ -8,4 +8,10 @@ export default {
   getAllRoutes() {
     return resolver(axiosClient.get("/route/getall"));
   },
+  getAllStations() {
+    return resolver(axiosClient.get("/route/stations"));
+  },
+  checkRouteAvailability(data) {
+    return resolver(axiosClient.post("/route/checkroute", data));
+  },
 };
