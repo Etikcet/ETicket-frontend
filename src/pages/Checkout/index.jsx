@@ -1,139 +1,285 @@
 import * as React from 'react';
+import Grid from '@mui/material/Grid';
+import Typography from '@mui/material/Typography';
+import TextField from '@mui/material/TextField';
+import { Formik } from "formik";
+import * as Yup from "yup";
+import CardMedia from '@mui/material/CardMedia';
+import { createTheme, ThemeProvider } from '@mui/material';
 import CssBaseline from '@mui/material/CssBaseline';
 import AppBar from '@mui/material/AppBar';
-import Box from '@mui/material/Box';
 import Container from '@mui/material/Container';
 import Toolbar from '@mui/material/Toolbar';
 import Paper from '@mui/material/Paper';
-import Stepper from '@mui/material/Stepper';
-import Step from '@mui/material/Step';
-import StepLabel from '@mui/material/StepLabel';
 import Button from '@mui/material/Button';
-import Typography from '@mui/material/Typography';
-import { createTheme, ThemeProvider } from '@mui/material/styles';
-import AddressForm from './AddressForm';
-import PaymentForm from './PaymentForm';
-import Review from './Review';
+import CardContent  from '@mui/material/CardContent';
 import Logo from '../../components/Logo';
-import { style, width } from '@mui/system';
-import { Circle } from '@mui/icons-material';
-import { Card, CardContent, CardMedia } from '@mui/material';
-import DirectionsBusFilledSharpIcon from '@mui/icons-material/DirectionsBusFilledSharp';
 
 
+const phoneRegExp =
+  /^((\\+[1-9]{1,4}[ \\-]*)|(\\([0-9]{2,3}\\)[ \\-]*)|([0-9]{2,4})[ \\-]*)*?[0-9]{3,4}?[ \\-]*[0-9]{3,4}?$/;
 
-const steps = ['Booking details', 'Payment details', 'Review your booking'];
+const emailRegExp = 
+  /^[a-zA-Z0-9.! #$%&'*+/=? ^_`{|}~-]+@[a-zA-Z0-9-]+(?:\. [a-zA-Z0-9-]+)*$/;
 
-function getStepContent(step) {
-  switch (step) {
-    case 0:
-      return <AddressForm />;
-    case 1:
-      return <PaymentForm />;
-    case 2:
-      return <Review />;
-    default:
-      throw new Error('Unknown step');
-  }
-}
+  const DateRegExp = 
+  /^\d{2}-(0[1-9]|1[0-2])$/
 
-const theme = createTheme();
+  const validationSchema = Yup.object().shape({
+    Firstname: Yup.string().required().label("First Name"),
+    Lastname: Yup.string().required().label("Last Name"),
+    Contactno: Yup.string()
+      .matches(phoneRegExp, "Phone number is not valid")
+      .length(10),
+    Email: Yup.string()
+      .matches(emailRegExp, "Email is not valid"),
+    Noofseats: Yup.number().required()
+      .typeError('you must specify a number')
+      .min(0, 'Min value 0.')
+      .max(30, 'Max value 30.'),
+      name: Yup.string().required().label("Name on card"),
+      cardno: Yup.number().required().label("Last Name")
+              .typeError("Invalid card number"),
+      cvv: Yup.string().matches(/^[0-9]{3}$/, 'Must be 3 digits'),
+      expdate: Yup.string().required()
+        .matches(DateRegExp, "Invalid date")
+
+    
+  });
+
+  const theme = createTheme();
+
 
 export default function Checkout() {
-  const [activeStep, setActiveStep] = React.useState(0);
-
-  const handleNext = () => {
-    setActiveStep(activeStep + 1);
-  };
-
-  const handleBack = () => {
-    setActiveStep(activeStep - 1);
-  };
-
   return (
     <ThemeProvider theme={theme} >
-      <CssBaseline />
-      <AppBar
-        position="absolute"
-        color="default"
-        elevation={0}
-        sx={{
-          position: 'relative',
-          borderBottom: (t) => `1px solid ${t.palette.divider}`,
+    <CssBaseline />
+    <AppBar
+      position="absolute"
+      color="default"
+      elevation={0}
+      sx={{
+        position: 'relative',
+        borderBottom: (t) => `1px solid ${t.palette.divider}`,
+      }}
+    >
+      <Toolbar>
+        <Logo/>
+      </Toolbar>
+    </AppBar>
+    <Container style={{ float:"left", width:"50%"}}>
+      
+        <CardMedia 
+        component="img"
+        style={{ height: "300px" }}
+        image={require("./busstop.png")}
+        alt={"bus"}
+        />
+        <CardContent>
+          <div style={{textAlign:"center"}}> <h3 style={{display:"inline-block"}}>Bus No</h3></div>
+          <div style={{textAlign:"center"}}> <h3 style={{display:"inline-block"}}>Departure Time</h3></div>
+          <div style={{textAlign:"center"}}> <h3 style={{display:"inline-block"}}>Arrival Time</h3></div>
+          <div style={{textAlign:"center"}}> <h3 style={{display:"inline-block"}}>Price</h3></div>
+          <div style={{textAlign:"center"}}> <h3 style={{display:"inline-block"}}>Contact No</h3></div>
+
+        </CardContent>
+      
+
+    </Container>
+
+    <Container component="main" maxWidth="sm" sx={{ mb: 4 }} style={{ float:"right", marginRight:"100px"}}>
+      <Paper variant="outlined" sx={{ my: { xs: 3, md: 6 }, p: { xs: 1, md: 3 } }}
+        style={{borderColor:"#9C27B0", backgroundColor:"#9c27b0"}}>
+        
+        <Typography component="h1" variant="h4" align="center" color={'white'}>
+          Checkout
+        </Typography>  
+      </Paper>
+
+       <Formik
+         initialValues={{
+          Firstname: "",
+          Contactno: "",
+          Email:"", 
+          Noofseats:"",
+          name: "",
+          cardno: "",
+          cvv:"", 
+          expdate:""  
+    
         }}
-      >
-        <Toolbar>
-          <Logo/>
-        </Toolbar>
-      </AppBar>
-      <Container style={{ float:"left", width:"50%"}}>
-        
-          <CardMedia 
-          component="img"
-          style={{ height: "300px" }}
-          image={require("./busstop.png")}
-          alt={"bus"}
-          />
-          <CardContent>
-            <div style={{textAlign:"center"}}> <h3 style={{display:"inline-block"}}>Bus No</h3></div>
-            <div style={{textAlign:"center"}}> <h3 style={{display:"inline-block"}}>Departure Time</h3></div>
-            <div style={{textAlign:"center"}}> <h3 style={{display:"inline-block"}}>Arrival Time</h3></div>
-            <div style={{textAlign:"center"}}> <h3 style={{display:"inline-block"}}>Price</h3></div>
-            <div style={{textAlign:"center"}}> <h3 style={{display:"inline-block"}}>Contact No</h3></div>
 
-          </CardContent>
+        onSubmit={(values) => {
+          // Validation success and needs to call backend
+          const data = {
+            Firstname: values.Firstname,
+            Contactno: values.Contactno,
+            Email: values.Email,
+            Noofseats: values.Noofseats,
+            name: values.name,
+            cardno: values.cardno,
+            cvv: values.cvv,
+            expdate: values.expdate,
+            userType: "CUSTOMER",
+          };
+          //registerUser(data);
+          
+        }}
         
+        validationSchema={validationSchema}
+        >
+          {(formikProps) => {
+                const { errors, handleSubmit, handleChange, touched } =
+                  formikProps;
+            
+          return(
+      <React.Fragment>
+      
 
-      </Container>
-
-      <Container component="main" maxWidth="sm" sx={{ mb: 4 }} style={{ float:"right", marginRight:"100px"}}>
-        <Paper variant="outlined" sx={{ my: { xs: 3, md: 6 }, p: { xs: 2, md: 3 } }}
-          style={{borderColor:"#9C27B0"}}>
-          
-          <Typography component="h1" variant="h4" align="center">
-            Checkout
-          </Typography>
-          
-          <Stepper activeStep={activeStep} sx={{ pt: 3, pb: 5 }} >
-            {steps.map((label) => (
-              <Step key={label} >
-                <StepLabel>{label}</StepLabel>
-              </Step>
-            ))}
-          </Stepper>
-          
-          <React.Fragment>
-            {activeStep === steps.length ? (
-              <React.Fragment>
-                <Typography variant="h5" gutterBottom>
-                  Booking confirmed.
-                </Typography>
-                
-              </React.Fragment>
-            ) : (
-              <React.Fragment>
-                {getStepContent(activeStep)}
-                <Box sx={{ display: 'flex', justifyContent: 'flex-end' }}>
-                {activeStep !== 0 && (
-                    <Button onClick={handleBack} sx={{ mt: 3, ml: 1 }} color="secondary">
-                      Back
-                    </Button>
-                  )}
-                  <Button
-                    color='secondary'
-                    variant="contained"
-                    onClick={handleNext}
-                    sx={{ mt: 3, ml: 1 }}
-                  >
-                    {activeStep === steps.length - 1 ? 'Place order' : 'Next'}
-                  </Button>
-                </Box>
-              </React.Fragment>
-            )}
-          </React.Fragment>
-        </Paper>
+        <Grid container spacing={3}>
+        <Grid item xs={12} >
         
-      </Container>
-    </ThemeProvider>
+        <TextField
+          required
+          id="outlined-required"
+          color="secondary"
+          label="Name"
+          defaultValue=""
+          fullWidth
+          error={errors.Firstname && touched.Fisrtname}
+          helperText={errors.Firstname || ""}
+          onChange={(event) => handleChange("Firstname")(event)}
+        />
+          
+        
+        </Grid>
+
+        <Grid item xs={12}>
+        <TextField
+          required
+          id="outlined-required"
+          color="secondary"
+          label="Contact No"
+          defaultValue=""
+          error={errors.Contactno && touched.Contactno}
+          helperText={errors.Contactno || ""}
+          onChange={(event) => handleChange("Contactno")(event)}
+        />
+        </Grid>
+
+        <Grid item xs={12}>
+          <TextField
+          required
+          id="outlined-required"
+          color="secondary"
+          label="Email"
+          fullWidth
+          defaultValue=""
+          error={errors.Email && touched.Email}
+          helperText={errors.Email || ""}
+          onChange={(event) => handleChange("Email")(event)}
+        />
+        </Grid >
+ 
+        <Grid item xs={12}>
+        <TextField
+          required
+          id="outlined-number"
+          label="Number of Seats"
+          color="secondary"
+          type="number"
+          InputLabelProps={{
+            shrink: true,
+          }}
+          error={errors.Noofseats && touched.Noofseats}
+          helperText={errors.Noofseats || ""}
+          onChange={(event) => handleChange("Noofseats")(event)}
+
+        />
+        </Grid>
+        <Grid item xs={12} md={6}>
+        <TextField
+          required
+          id="outlined-required"
+          label="Name on card"
+          fullWidth  
+          color='secondary'
+          error={errors.name && touched.name}
+          helperText={errors.name || ""}
+          onChange={(event) => handleChange("name")(event)}
+        />
+        
+      </Grid>
+
+      <Grid item xs={12} md={6}>
+      <TextField
+          required
+          id="outlined-required"
+          label="Card Number"
+          fullWidth  
+          color='secondary'
+          error={errors.cardno && touched.cardno}
+          helperText={errors.cardno || ""}
+          onChange={(event) => handleChange("cardno")(event)}
+      />
+      </Grid>
+
+      <Grid item xs={12} md={6}>
+         <TextField
+          required
+          id="outlined-required"
+          label="Exp Date"
+          fullWidth 
+          color='secondary'
+          error={errors.expdate && touched.expdate}
+          helperText={errors.expdate || ""}
+          onChange={(event) => handleChange("expdate")(event)} 
+        />
+      </Grid>
+      <Grid item xs={12} md={6}>
+        <TextField
+          required
+          id="outlined-required"
+          label="CVV"
+          fullWidth  
+          color='secondary'
+          error={errors.cvv && touched.cvv}
+          helperText={errors.cvv || ""}
+          onChange={(event) => handleChange("cvv")(event)}
+        />
+      </Grid>
+
+
+        <Grid style={{paddingTop:"24px", paddingLeft:"24px"}}>
+          <Button 
+          type="submit"
+          color="secondary"
+          variant="contained"
+          size="large"
+          onClick={handleSubmit}
+          //disabled={loading}
+          style={{}}
+        >
+         Confirm
+        </Button>
+        </Grid>
+        
+          
+        
+ 
+         
+      </Grid>
+      
+    </React.Fragment>
+   
   );
+  }}
+  </Formik>
+ 
+      
+    </Container>
+  
+    
+  </ThemeProvider>
+  );  
 }
