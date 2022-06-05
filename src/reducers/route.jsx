@@ -15,7 +15,6 @@ export const routeSlice = createSlice({
   initialState,
   reducers: {
     routeClicked: (state, action) => {
-      console.log("Action is: ", action);
       state.ID = action.payload.id;
       state.busId = action.payload.bus_number;
       state.start = action.payload.start;
