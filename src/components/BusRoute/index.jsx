@@ -1,4 +1,6 @@
 import React from "react";
+import { useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
 import CardMedia from "@mui/material/CardMedia";
@@ -6,16 +8,24 @@ import Link from "@mui/material/Link";
 import CardActionArea from "@mui/material/CardActionArea";
 import Typography from "@mui/material/Typography";
 import BUSIMAGE from "./bus.jpg";
+import { routeClicked } from "../../reducers/route";
 
 export default function BusRoute(props) {
   const { route } = props;
-  console.log(route);
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
   return (
     <Card
       sx={{ height: "100%", display: "flex", flexDirection: "column" }}
       style={{ width: "300px", borderStyle: "solid", borderColor: "#9C27B0" }}
     >
-      <Link href="/checkout" style={{ textDecoration: "none", color: "#000" }}>
+      <Link
+        style={{ textDecoration: "none", color: "#000" }}
+        onClick={() => {
+          dispatch(routeClicked(route));
+          navigate("/checkout");
+        }}
+      >
         <CardActionArea>
           <CardMedia
             component="img"
