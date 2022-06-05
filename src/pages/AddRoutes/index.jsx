@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import Button from "@mui/material/Button";
-import CssBaseline from "@mui/material/CssBaseline";
 import TextField from "@mui/material/TextField";
 import { useNavigate } from "react-router-dom";
 import { Formik } from "formik";
@@ -18,6 +17,9 @@ const validationSchema = Yup.object().shape({
   busId: Yup.string().required().label("Bus Id"),
   start: Yup.string().required().label("Starting Station"),
   end: Yup.string().required().label("Ending Station"),
+  arrivalTime: Yup.string().required().label("Arrival Time"),
+  departureTime: Yup.string().required().label("Departure Time"),
+  price: Yup.number().required().label("Price"),
 });
 
 export default function AddRoute() {
@@ -27,14 +29,18 @@ export default function AddRoute() {
     message: "",
     type: "",
   });
+
   const navigate = useNavigate();
 
   async function addRoute(values) {
     setLoading(true);
     const data = {
-      ID: values.busId,
+      busNumber: values.busId,
       start: values.start,
       finish: values.end,
+      arrivalTime: values.arrivalTime,
+      departureTime: values.departureTime,
+      price: values.price,
     };
     try {
       const res = await api.route.addRoute(data);
@@ -77,12 +83,10 @@ export default function AddRoute() {
         setOpen={setOpenSnackBar}
       />
       <AccountNavigationBar />
-      <HeightBox height={40} />
+      <HeightBox height={10} />
       <Container component="main" maxWidth="xs">
-        <CssBaseline />
         <Box
           sx={{
-            marginTop: 8,
             display: "flex",
             flexDirection: "column",
             alignItems: "center",
@@ -96,6 +100,9 @@ export default function AddRoute() {
               busId: "",
               start: "",
               end: "",
+              arrivalTime: "",
+              departureTime: "",
+              price: "",
             }}
             onSubmit={(values, actions) => {
               addRoute(values).then((res) => {
@@ -139,21 +146,59 @@ export default function AddRoute() {
                     value={values.end}
                     onChange={handleChange("end")}
                   />
-
+                  <TextField
+                    margin="normal"
+                    required
+                    fullWidth
+                    type="time"
+                    label="Arrival Time"
+                    value={values.arrivalTime}
+                    InputLabelProps={{ shrink: true }}
+                    error={touched.arrivalTime && errors.arrivalTime}
+                    helperText={touched.arrivalTime ? errors.arrivalTime : ""}
+                    onChange={handleChange("arrivalTime")}
+                  />
+                  <TextField
+                    margin="normal"
+                    required
+                    fullWidth
+                    type="time"
+                    label="Departure Time"
+                    value={values.departureTime}
+                    InputLabelProps={{ shrink: true }}
+                    error={touched.departureTime && errors.departureTime}
+                    helperText={
+                      touched.departureTime ? errors.departureTime : ""
+                    }
+                    onChange={handleChange("departureTime")}
+                  />
+                  <TextField
+                    margin="normal"
+                    required
+                    fullWidth
+                    label="Price"
+                    error={touched.price && errors.price}
+                    helperText={touched.price ? errors.price : ""}
+                    value={values.price}
+                    onChange={handleChange("price")}
+                  />
+                  <HeightBox height={10} />
                   <Button
                     onClick={() => {
                       handleSubmit();
                     }}
                     disabled={loading}
+                    style={{ height: 50 }}
                     fullWidth
                     variant="contained"
                   >
                     {loading ? <CircularProgress /> : " Add Route"}
                   </Button>
-                  <HeightBox height={20} />
+                  <HeightBox height={10} />
                   <Button
                     fullWidth
                     disabled={loading}
+                    style={{ height: 50 }}
                     onClick={() => navigate("/addroutes")}
                     variant="contained"
                     href="../../BusRoutes"
@@ -164,6 +209,7 @@ export default function AddRoute() {
               );
             }}
           </Formik>
+          <HeightBox height={40} />
         </Box>
       </Container>
     </div>

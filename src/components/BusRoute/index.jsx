@@ -9,6 +9,7 @@ import BUSIMAGE from "./bus.jpg";
 
 export default function BusRoute(props) {
   const { route } = props;
+  console.log(route);
   return (
     <Card
       sx={{ height: "100%", display: "flex", flexDirection: "column" }}
@@ -26,19 +27,22 @@ export default function BusRoute(props) {
             <Typography
               gutterBottom
               variant="h5"
-              component="h2"
-              style={{ fontFamily: "Lato" }}
+              component="h3"
+              style={{ fontFamily: "Lato", fontWeight: "bold" }}
             >
               {route.start} - {route.finish}
             </Typography>
             <Typography variant="h6" style={{ fontFamily: "Lato" }}>
-              Bus id: {route.id}
+              Bus id: {route.bus_number}
             </Typography>
             <Typography variant="h6" style={{ fontFamily: "Lato" }}>
-              {route.arrival}
+              Arrival at: {route.arrival_time}
             </Typography>
             <Typography variant="h6" style={{ fontFamily: "Lato" }}>
-              {route.departure}
+              Departure at: {route.departure_time}
+            </Typography>
+            <Typography variant="h6" style={{ fontFamily: "Lato" }}>
+              Rs: {route.price}
             </Typography>
           </CardContent>
         </CardActionArea>

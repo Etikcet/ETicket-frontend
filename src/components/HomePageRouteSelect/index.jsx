@@ -5,6 +5,7 @@ import TextField from "@mui/material/TextField";
 import Autocomplete from "@mui/material/Autocomplete";
 import SearchIcon from "@mui/icons-material/Search";
 import { styled } from "@mui/system";
+import api from "../../api";
 
 const CustomButton = styled("div")({
   textTransform: "none",
@@ -19,15 +20,46 @@ const CustomButton = styled("div")({
   },
 });
 
-const startingCitiesDummy = [
-  { label: "Matara", year: 1994 },
-  { label: "Colombo", year: 1994 },
-  { label: "Jaffna", year: 1994 },
-  { label: "Gampaha", year: 1994 },
-];
-
-export default function HomePageRouteSelect() {
+export default function HomePageRouteSelect({
+  stations,
+  setSearchedData,
+  setRoutesSearched,
+}) {
   const [clickedButton, setClickedButton] = useState("BOOKINGS");
+  const [startCity, setStartCity] = useState("");
+  const [endCity, setEndCity] = useState("");
+  const [selectDate, setSelectDate] = useState("");
+  const [seats, setSeats] = useState(1);
+
+  const startingCities = [];
+  const endingCities = [];
+
+  stations.forEach((element) => {
+    startingCities.push({
+      label: element.start,
+    });
+    endingCities.push({
+      label: element.finish,
+    });
+  });
+
+  function searchRouteAvailability() {
+    async function checkAvailability() {
+      const data = {
+        start: startCity,
+        finish: endCity,
+        seats: seats,
+      };
+      try {
+        const [code, res] = await api.route.checkRouteAvailability(data);
+        setSearchedData(res);
+        setRoutesSearched(true);
+      } catch (error) {}
+    }
+
+    checkAvailability();
+  }
+
   return (
     <div style={{ marginTop: -150 }}>
       <div
@@ -106,7 +138,10 @@ export default function HomePageRouteSelect() {
             <Autocomplete
               disablePortal
               id="combo-box-demo"
-              options={startingCitiesDummy}
+              options={startingCities}
+              onChange={(event, value, reason) => {
+                setStartCity(value?.label);
+              }}
               sx={{ width: 200 }}
               renderInput={(params) => <TextField {...params} label="Start" />}
             />
@@ -126,7 +161,10 @@ export default function HomePageRouteSelect() {
             <Autocomplete
               disablePortal
               id="combo-box-demo"
-              options={startingCitiesDummy}
+              options={endingCities}
+              onChange={(event, value) => {
+                setEndCity(value?.label);
+              }}
               sx={{ width: 200 }}
               renderInput={(params) => <TextField {...params} label="To" />}
             />
@@ -143,7 +181,14 @@ export default function HomePageRouteSelect() {
             >
               Date
             </p>
-            <TextField type="date" placeholder="Date" sx={{ width: 200 }} />
+            <TextField
+              type="date"
+              placeholder="Date"
+              sx={{ width: 200 }}
+              onChange={(event) => {
+                setSelectDate(event?.target?.value);
+              }}
+            />
           </Stack>
           <Stack direction="column" spacing={1}>
             <p
@@ -157,7 +202,14 @@ export default function HomePageRouteSelect() {
             >
               No: of Seats
             </p>
-            <TextField type="text" defaultValue={1} sx={{ width: 200 }} />
+            <TextField
+              type="text"
+              defaultValue={1}
+              sx={{ width: 200 }}
+              onChange={(event) => {
+                setSeats(event?.target?.value);
+              }}
+            />
           </Stack>
           <Stack direction="column" spacing={1}>
             <div style={{ height: 20 }} />
@@ -165,6 +217,7 @@ export default function HomePageRouteSelect() {
               color="secondary"
               variant="contained"
               style={{ height: 55 }}
+              onClick={searchRouteAvailability}
             >
               <SearchIcon fontSize="large" />
             </Button>
