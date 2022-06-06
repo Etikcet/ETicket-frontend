@@ -7,7 +7,6 @@ import Checkout from "../pages/Checkout";
 import SignIn from "../pages/SignIn";
 import BusRoutes from "../pages/BusRoutes";
 import AddRoutes from "../pages/AddRoutes";
-import AddSchedules from "../pages/AddSchedules";
 import DashboardPage from "../pages/Dashboard";
 import BookingView from "../pages/BookingView";
 import Help from "../pages/Help";
@@ -24,11 +23,15 @@ export default function Router() {
           <Route path="/checkout" element={<Checkout />} />
           <Route path="/busroutes" element={<BusRoutes />} />
           <Route path="/signin" element={<SignIn />} />
-          <Route path="/addroutes" element={<AddRoutes />} />
-          <Route path="/addschedules" element={<AddSchedules />} />
+          <Route
+            path="/addroutes"
+            element={auth ? <AddRoutes /> : <Navigate to="/" />}
+          />
           <Route path="/bookingview" element={<BookingView />} />
-          <Route path="help" element={<Help />} />
-          <Route path="/dashboard" element={auth ? <DashboardPage /> : <Navigate to="/" />}
+          <Route path="/help" element={<Help />} />
+          <Route
+            path="/dashboard"
+            element={auth ? <DashboardPage /> : <Navigate to="/" />}
           />
         </Routes>
       </BrowserRouter>
