@@ -16,6 +16,7 @@ import { loggingRequest } from "../../reducers/user";
 import SnackBarComponent from "../../components/SnackBarComponent";
 import api from "../../api";
 import { ETICKET_USER_DETAILS, TOKEN_KEY } from "../../constants";
+import Footer from "../../components/Footer";
 
 const CustomTextField = styled(TextField)({
   width: 350,
@@ -181,6 +182,7 @@ export default function SignIn() {
           <img src={LOGIN_IMAGE} alt="" style={{ width: "40vw" }} />
         </div>
       </Stack>
+      <Footer />
     </div>
   );
 }
