@@ -28,21 +28,22 @@ const emailRegExp =
   const validationSchema = Yup.object().shape({
     Firstname: Yup.string().required().label("First Name"),
     Lastname: Yup.string().required().label("Last Name"),
-    Contactno: Yup.string()
+    Contactno: Yup.string().required().label("Contact No")
       .matches(phoneRegExp, "Phone number is not valid")
       .length(10),
-    Email: Yup.string()
+    Email: Yup.string().required().label("Email")
       .matches(emailRegExp, "Email is not valid"),
-    Noofseats: Yup.number().required()
+    Noofseats: Yup.number().required().label("No of Seats")
       .typeError('you must specify a number')
       .min(0, 'Min value 0.')
       .max(30, 'Max value 30.'),
-      name: Yup.string().required().label("Name on card"),
-      cardno: Yup.number().required().label("Last Name")
-              .typeError("Invalid card number"),
-      cvv: Yup.string().matches(/^[0-9]{3}$/, 'Must be 3 digits'),
-      expdate: Yup.string().required()
-        .matches(DateRegExp, "Invalid date")
+    name: Yup.string().required().label("Name on card"),
+    cardno: Yup.number().required().label("Card Number")
+      .typeError("Invalid card number"),
+    cvv: Yup.string().required().label("CVV")
+      .matches(/^[0-9]{3}$/, 'Must be 3 digits'),
+    expdate: Yup.string().required().label("Expire Date")
+      .matches(DateRegExp, "Invalid date")
 
     
   });
