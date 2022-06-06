@@ -92,21 +92,6 @@ export default function HomePageRouteSelect({
           >
             Bookings
           </CustomButton>
-          <CustomButton
-            onClick={() => {
-              setClickedButton("ROUTES");
-            }}
-            style={{
-              borderTopRightRadius: 10,
-              color: clickedButton === "ROUTES" ? "#FF6584" : "#fff",
-              backgroundColor:
-                clickedButton === "ROUTES"
-                  ? "#fff"
-                  : "rgba(255, 255, 255, 0.2)",
-            }}
-          >
-            Routes
-          </CustomButton>
         </Stack>
       </div>
 
