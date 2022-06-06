@@ -4,6 +4,7 @@ import Stack from "@mui/material/Stack";
 import Button from "@mui/material/Button";
 import { useNavigate } from "react-router-dom";
 import Logo from "../Logo";
+import BasicMenu from "../../components/BasicMenu";
 
 const CustomButton = styled(Button)({
   textTransform: "none",
@@ -51,6 +52,7 @@ export default function AccountNavigationBar() {
           >
             Routes
           </CustomButton>
+
           <CustomButton
             variant="contained"
             disableElevation
@@ -58,12 +60,10 @@ export default function AccountNavigationBar() {
           >
             Bookings
           </CustomButton>
-          <CustomButton
-            variant="contained"
-            disableElevation
-            onClick={() => navigate("/accountpage")}
-          >
-            Account
+
+
+          <CustomButton variant="contained" disableElevation>
+            <BasicMenu />
           </CustomButton>
 
           <CustomButton
@@ -71,7 +71,7 @@ export default function AccountNavigationBar() {
             disableElevation
             onClick={() => navigate("/help")}
           >
-            help
+            Help
           </CustomButton>
         </Stack>
       </div>

@@ -11,57 +11,6 @@ import { Button } from "@mui/material";
 import HeightBox from "../../components/HeightBox";
 import api from "../../api";
 
-const routes = [
-  {
-    id: "1",
-    start: "Matara",
-    finish: "Colombo",
-    price: "Rs:1300",
-    arrival: "10.30am",
-    departure: "10.45am",
-  },
-  {
-    id: "2",
-    start: "Matara",
-    finish: "Colombo",
-    price: "Rs:1300",
-    arrival: "10.30am",
-    departure: "10.45am",
-  },
-  {
-    id: "3",
-    start: "Matara",
-    finish: "Colombo",
-    price: "Rs:1300",
-    arrival: "10.30am",
-    departure: "10.45am",
-  },
-  {
-    id: "4",
-    start: "Matara",
-    finish: "Colombo",
-    price: "Rs:1300",
-    arrival: "10.30am",
-    departure: "10.45am",
-  },
-  {
-    id: "5",
-    start: "Matara",
-    finish: "Colombo",
-    price: "Rs:1300",
-    arrival: "10.30am",
-    departure: "10.45am",
-  },
-  {
-    id: "6",
-    start: "Matara",
-    finish: "Colombo",
-    price: "Rs:1300",
-    arrival: "10.30am",
-    departure: "10.45am",
-  },
-];
-
 export default function BusRoutes() {
   const navigate = useNavigate();
   const userIsAdmin = useSelector((state) => state.user?.isAdmin);
@@ -71,7 +20,7 @@ export default function BusRoutes() {
     async function getAllRoutes() {
       try {
         const [code, data] = await api.route.getAllRoutes();
-        if (code === 200 && data.statusCode === 201) {
+        if (code === 200 && data?.data?.statusCode === 201) {
           setAllRoutes(data.data.routes);
         }
       } catch (error) {}
