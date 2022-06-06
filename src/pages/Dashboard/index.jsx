@@ -4,8 +4,6 @@ import { Button } from "@mui/material";
 import { Stack } from "@mui/material";
 import HeightBox from "../../components/HeightBox";
 import DASHBOARD_IMAGE from "../../assets/dashboard-image.svg";
-import Card from "@mui/material/Card";
-import CardContent from "@mui/material/CardContent";
 import PendingBooking from "../../components/PendingBooking";
 import api from "../../api";
 
