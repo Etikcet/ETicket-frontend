@@ -32,24 +32,21 @@ export default function Dashboard() {
       <HeightBox height={20} />
       <div style={{ maxWidth: 1280, marginLeft: "auto", marginRight: "auto" }}>
         <Stack direction="row" spacing={15}>
-          <Card sx={{ minWidth: 450, marginBottom: 10 }} variant="outlined">
-            <CardContent>
-              <Stack direction="column" spacing={2}>
-                <p style={{ color: "#9c27b0", fontWeight: 500, fontSize: 25 }}>
-                  Pending Bookings
-                </p>
-                {userBookings.length === 0 && (
-                  <div>
-                    <p>You do not have any pending bookings</p>
-                  </div>
-                )}
-                {userBookings.slice(0, 2).map((item) => (
-                  <PendingBooking booking={item} />
-                ))}
-                {userBookings.length > 2 && <Button>See more</Button>}
-              </Stack>
-            </CardContent>
-          </Card>
+          <Stack direction="column" spacing={2}>
+            <p style={{ color: "#9c27b0", fontWeight: 500, fontSize: 25 }}>
+              Pending Bookings
+            </p>
+            {userBookings.length === 0 && (
+              <div>
+                <p>You do not have any pending bookings</p>
+              </div>
+            )}
+            {userBookings.slice(0, 2).map((item) => (
+              <PendingBooking booking={item} />
+            ))}
+            {userBookings.length > 2 && <Button>See more</Button>}
+          </Stack>
+
           <div>
             <img
               src={DASHBOARD_IMAGE}
