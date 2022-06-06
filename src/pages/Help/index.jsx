@@ -12,7 +12,7 @@ export default function Help(){
  
             
  
-        <Stack direction={'row'} spacing={4}>
+        <Stack direction={'row'} spacing={4} justifyContent='center'>
         <Box
       sx={{
         width: 300,
