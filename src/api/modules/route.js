@@ -17,4 +17,7 @@ export default {
   checkRouteAvailability(data) {
     return resolver(axiosClient.post("/route/checkroute", data));
   },
+  getPopularRoutes() {
+    return resolver(axiosClient.get("/route/popular"));
+  },
 };

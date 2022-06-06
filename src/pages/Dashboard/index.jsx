@@ -11,6 +11,8 @@ export default function Dashboard() {
   const [userBookings, setUserBookings] = useState([]);
 
   React.useEffect(() => {
+ 
+
     async function getUserBookings() {
       try {
         const [code, data] = await api.booking.getUserBookings();
@@ -22,6 +24,7 @@ export default function Dashboard() {
       }
     }
     getUserBookings();
+   
   }, []);
 
   return (

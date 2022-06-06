@@ -14,6 +14,17 @@ export default function Home() {
   const [popularRoutes, setPopularRoutes] = useState([]);
 
   React.useEffect(() => {
+    async function getPopularRoutes() {
+      try {
+        const [code, data] = await api.route.getPopularRoutes();
+        if (code === 200) {
+          console.log(data);
+          setPopularRoutes(data?.routes);
+        }
+      } catch (error) {
+        // Error occured while getting the popular routes
+      }
+    }
     async function getAllStations() {
       try {
         const [code, res] = await api.route.getAllStations();
@@ -23,6 +34,7 @@ export default function Home() {
       } catch (error) {}
     }
     getAllStations();
+    getPopularRoutes();
   }, []);
 
   return (
