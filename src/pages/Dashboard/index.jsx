@@ -2,29 +2,35 @@ import React, { useState } from "react";
 import AccountNavigationBar from "../../components/AccountNavigationBar";
 import { Button } from "@mui/material";
 import { Stack } from "@mui/material";
+import { useNavigate } from "react-router-dom";
 import HeightBox from "../../components/HeightBox";
 import DASHBOARD_IMAGE from "../../assets/dashboard-image.svg";
 import PendingBooking from "../../components/PendingBooking";
 import api from "../../api";
 
 export default function Dashboard() {
+  const navigate = useNavigate();
+
   const [userBookings, setUserBookings] = useState([]);
 
   React.useEffect(() => {
- 
-
     async function getUserBookings() {
       try {
         const [code, data] = await api.booking.getUserBookings();
         if (code === 200) {
-          setUserBookings(data.bookings);
+          const temp = [];
+          data.bookings.forEach((element) => {
+            if (element.status === "PENDING") {
+              temp.push(element);
+            }
+          });
+          setUserBookings(temp);
         }
       } catch (error) {
         // Error occured while getting the user bookings
       }
     }
     getUserBookings();
-   
   }, []);
 
   return (
@@ -45,7 +51,9 @@ export default function Dashboard() {
             {userBookings.slice(0, 2).map((item) => (
               <PendingBooking booking={item} />
             ))}
-            {userBookings.length > 2 && <Button>See more</Button>}
+            {userBookings.length > 2 && (
+              <Button onClick={() => navigate("/bookingview")}>See more</Button>
+            )}
           </Stack>
 
           <div>
