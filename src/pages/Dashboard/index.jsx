@@ -1,39 +1,31 @@
-import React from "react";
+import React, { useState } from "react";
 import AccountNavigationBar from "../../components/AccountNavigationBar";
 import { Button } from "@mui/material";
 import { Stack } from "@mui/material";
 import HeightBox from "../../components/HeightBox";
 import DASHBOARD_IMAGE from "../../assets/dashboard-image.svg";
-import Footer from "../../components/Footer";
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
 import PendingBooking from "../../components/PendingBooking";
-
-const userBookings = [
-  {
-    id: 1,
-    start: "Colombo",
-    end: "Matara",
-    startTime: "12.30am",
-    endTime: "2.00pm",
-  },
-  {
-    id: 2,
-    start: "Colombo",
-    end: "Matara",
-    startTime: "12.30am",
-    endTime: "2.00pm",
-  },
-  {
-    id: 3,
-    start: "Colombo",
-    end: "Matara",
-    startTime: "12.30am",
-    endTime: "2.00pm",
-  },
-];
+import api from "../../api";
 
 export default function Dashboard() {
+  const [userBookings, setUserBookings] = useState([]);
+
+  React.useEffect(() => {
+    async function getUserBookings() {
+      try {
+        const [code, data] = await api.booking.getUserBookings();
+        if (code === 200) {
+          setUserBookings(data.bookings);
+        }
+      } catch (error) {
+        // Error occured while getting the user bookings
+      }
+    }
+    getUserBookings();
+  }, []);
+
   return (
     <Stack direction="column" justifyContent="center">
       <AccountNavigationBar />
