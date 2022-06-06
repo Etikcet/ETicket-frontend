@@ -28,9 +28,6 @@ export default function HomePageNavigationBar() {
         <h1 style={{ fontSize: 36, margin: 0 }}>Etikcet</h1>
       </Stack>
       <Stack direction="row">
-        <CustomButton variant="text" onClick={() => navigate("/busroutes")}>
-          Routes
-        </CustomButton>
         <CustomButton variant="text" onClick={() => navigate("/help")}>
           Help
         </CustomButton>
