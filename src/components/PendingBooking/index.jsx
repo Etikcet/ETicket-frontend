@@ -12,7 +12,7 @@ export default function PendingBooking(props) {
   async function updateBookingStatus(id) {
     try {
       const [code, res] = await api.booking.updateBookingStatus(id);
-      if (code === 201) {
+      if (code === 201 && res?.statusCode === 201) {
         // Status update succesfully
       }
     } catch (error) {
@@ -39,7 +39,7 @@ export default function PendingBooking(props) {
       } catch (error) {}
     }
     getRoute();
-  }, []);
+  }, [booking]);
   return (
     <Card>
       <CardContent>
