@@ -10,6 +10,7 @@ import AddRoutes from "../pages/AddRoutes";
 import AddSchedules from "../pages/AddSchedules";
 import DashboardPage from "../pages/Dashboard";
 import BookingView from "../pages/BookingView";
+import Help from "../pages/Help";
 
 export default function Router() {
   const auth = useSelector((state) => state.user.auth);
@@ -26,9 +27,8 @@ export default function Router() {
           <Route path="/addroutes" element={<AddRoutes />} />
           <Route path="/addschedules" element={<AddSchedules />} />
           <Route path="/bookingview" element={<BookingView />} />
-          <Route
-            path="/dashboard"
-            element={auth ? <DashboardPage /> : <Navigate to="/" />}
+          <Route path="help" element={<Help />} />
+          <Route path="/dashboard" element={auth ? <DashboardPage /> : <Navigate to="/" />}
           />
         </Routes>
       </BrowserRouter>
