@@ -1,5 +1,4 @@
-import * as React from "react";
-import Grid from "@mui/material/Grid";
+import React, { useState } from "react";
 import Typography from "@mui/material/Typography";
 import TextField from "@mui/material/TextField";
 import { useSelector } from "react-redux";
@@ -7,18 +6,18 @@ import { Formik } from "formik";
 import * as Yup from "yup";
 import CardMedia from "@mui/material/CardMedia";
 import { Stack } from "@mui/material";
-import AppBar from "@mui/material/AppBar";
 import Container from "@mui/material/Container";
-import Toolbar from "@mui/material/Toolbar";
 import Paper from "@mui/material/Paper";
 import Button from "@mui/material/Button";
 import CardContent from "@mui/material/CardContent";
-import Logo from "../../components/Logo";
 import Checkbox from "@mui/material/Checkbox";
 import { FormControlLabel } from "@mui/material";
 import HomePageNavigationBar from "../../components/HomePageNavigationBar";
 import AccountNavigationBar from "../../components/AccountNavigationBar";
 import HeightBox from "../../components/HeightBox";
+import api from "../../api";
+import CircularProgress from "@mui/material/CircularProgress";
+import SnackBarComponent from "../../components/SnackBarComponent";
 
 const phoneRegExp =
   /^((\\+[1-9]{1,4}[ \\-]*)|(\\([0-9]{2,3}\\)[ \\-]*)|([0-9]{2,4})[ \\-]*)*?[0-9]{3,4}?[ \\-]*[0-9]{3,4}?$/;
@@ -52,6 +51,7 @@ const validationSchemaNewUser = Yup.object().shape({
   noOfSeats: Yup.number().min(1).required().label("Number of Seats"),
   nameOnTheCard: Yup.string().required().label("Name on card"),
   cardNo: Yup.number().required().label("Card Number"),
+  date: Yup.string().required().label("Date"),
   cvv: Yup.string()
     .required()
     .label("CVV")
@@ -81,6 +81,7 @@ const validationSchemaExisitingUser = Yup.object().shape({
     ),
 
   noOfSeats: Yup.number().min(1).required().label("Number of Seats"),
+  date: Yup.string().required().label("Date"),
   nameOnTheCard: Yup.string().required().label("Name on card"),
   cardNo: Yup.number().required().label("Card Number"),
   cvv: Yup.string()
@@ -93,8 +94,121 @@ const validationSchemaExisitingUser = Yup.object().shape({
 export default function Checkout() {
   const userState = useSelector((state) => state?.user);
   const routeState = useSelector((state) => state?.route);
+  const [seatPrice, setSeatPrice] = React.useState(routeState?.price);
+  const [openSnackBar, setOpenSnackBar] = useState(false);
+  const [snackMessage, setSnackMessage] = useState({ type: "", message: "" });
+  const [loading, setLoading] = useState(false);
 
-  const [clickedItem, setClickedItem] = React.useState("EXISTING");
+  const [clickedItem, setClickedItem] = React.useState(
+    userState?.auth ? "EXISTING" : "NEW"
+  );
+
+  async function addBooking(details, actions) {
+    try {
+      const [code, res] = await api.booking.addBooking(details);
+      console.log("Code: ", code, res);
+      if (code === 201) {
+        setSnackMessage({
+          type: "success",
+          message: "Booking Added succesfully!",
+        });
+        setOpenSnackBar(true);
+        actions.resetForm();
+      }
+      setLoading(false);
+    } catch (error) {
+      // Error in adding the booking
+      setSnackMessage({
+        type: "error",
+        message: "Error in adding the booking",
+      });
+      setOpenSnackBar(true);
+      setLoading(false);
+    }
+  }
+
+  async function checkUser(values, actions) {
+    setLoading(true);
+    if (clickedItem === "NEW") {
+      // Need to register the user and add the booking
+      const data = {
+        name: values.name,
+        username: values.username,
+        password: values.password,
+        phoneNumber: values.phoneNumber,
+        userType: "CUSTOMER",
+      };
+      try {
+        const [code, res] = await api.user.registerUser(data);
+        if (code === 201) {
+          // User registation completed
+          const user = res.data.user;
+          const userId = user?.ID;
+          const data = {
+            userId: userId,
+            routeId: routeState.ID,
+            price: seatPrice,
+            status: "PENDING",
+            date: values.date,
+            seats: values.noOfSeats,
+          };
+          addBooking(data, actions);
+        } else {
+          setSnackMessage({
+            type: "error",
+            message: "Error in registering the user!",
+          });
+          setOpenSnackBar(true);
+        }
+        setLoading(false);
+      } catch (error) {
+        // Error occured while registering the user
+        setSnackMessage({
+          type: "error",
+          message: "Error in registering the user!",
+        });
+        setOpenSnackBar(true);
+        setLoading(false);
+      }
+    } else {
+      // Validate the user and add the booking if user is validated
+      const data = {
+        username: values.username,
+        password: values.password,
+      };
+
+      try {
+        const [code, res] = await api.user.signinUser(data);
+        if (code === 200) {
+          const userId = res?.data?.user?.id;
+
+          const data = {
+            userId: userId,
+            routeId: routeState.ID,
+            price: seatPrice,
+            status: "PENDING",
+            date: values.date,
+            seats: values.noOfSeats,
+          };
+          addBooking(data, actions);
+        } else {
+          setSnackMessage({
+            type: "error",
+            message: "Error in signing the user!",
+          });
+          setOpenSnackBar(true);
+        }
+        setLoading(false);
+      } catch (error) {
+        setSnackMessage({
+          type: "error",
+          message: "Error in signing the user!",
+        });
+        setOpenSnackBar(true);
+        setLoading(false);
+      }
+    }
+  }
 
   const handleExistingUserCheckBoxChange = (event) => {
     // console.log("existing user changed");
@@ -116,6 +230,12 @@ export default function Checkout() {
 
   return (
     <div>
+      <SnackBarComponent
+        open={openSnackBar}
+        setOpen={setOpenSnackBar}
+        message={snackMessage.message}
+        type={snackMessage.type}
+      />
       {userState?.auth ? <AccountNavigationBar /> : <HomePageNavigationBar />}
       <Stack direction="row">
         <Container
@@ -146,7 +266,7 @@ export default function Checkout() {
             </div>
             <div style={{ textAlign: "center" }}>
               <h3 style={{ display: "inline-block", margin: 0 }}>Price</h3>
-              <p>{routeState?.price}</p>
+              <p>{seatPrice}</p>
             </div>
           </CardContent>
         </Container>
@@ -171,36 +291,40 @@ export default function Checkout() {
               Checkout
             </Typography>
           </Paper>
-          <div>
-            <FormControlLabel
-              value="NewUser"
-              control={<Checkbox checked={clickedItem === "NEW"} />}
-              label="New User"
-              labelPlacement="end"
-              onChange={handleNewUserCheckBoxChange}
-            />
+          {!userState?.auth && (
+            <div>
+              <FormControlLabel
+                value="NewUser"
+                control={<Checkbox checked={clickedItem === "NEW"} />}
+                label="New User"
+                labelPlacement="end"
+                onChange={handleNewUserCheckBoxChange}
+              />
 
-            <FormControlLabel
-              value="ExistingUser"
-              control={<Checkbox checked={clickedItem === "EXISTING"} />}
-              label="Existing User"
-              labelPlacement="end"
-              onChange={handleExistingUserCheckBoxChange}
-            />
-          </div>
+              <FormControlLabel
+                value="ExistingUser"
+                control={<Checkbox checked={clickedItem === "EXISTING"} />}
+                label="Existing User"
+                labelPlacement="end"
+                onChange={handleExistingUserCheckBoxChange}
+              />
+            </div>
+          )}
           {clickedItem === "EXISTING" && (
             <Formik
               initialValues={{
-                username: "",
+                username: userState?.username || "",
                 password: "",
                 noOfSeats: 1,
                 nameOnTheCard: "",
+                date: "",
                 cardNo: "",
                 cvv: "",
                 expire: "",
               }}
-              onSubmit={(values) => {
+              onSubmit={(values, actions) => {
                 // validation completed
+                checkUser(values, actions);
               }}
               validationSchema={validationSchemaExisitingUser}
             >
@@ -216,6 +340,7 @@ export default function Checkout() {
                       variant="outlined"
                       fullWidth
                       color="secondary"
+                      value={values.username}
                       error={errors.username && touched.username}
                       helperText={errors.userName || ""}
                       onChange={(event) => handleChange("username")(event)}
@@ -226,6 +351,7 @@ export default function Checkout() {
                       variant="outlined"
                       color="secondary"
                       fullWidth
+                      value={values.password}
                       type="password"
                       error={errors.password && touched.password}
                       helperText={errors.password || ""}
@@ -241,13 +367,30 @@ export default function Checkout() {
                       value={values.noOfSeats}
                       error={errors.noOfSeats && touched.noOfSeats}
                       helperText={errors.noOfSeats || ""}
-                      onChange={(event) => handleChange("noOfSeats")(event)}
+                      onChange={(event) => {
+                        handleChange("noOfSeats")(event);
+                        setSeatPrice(routeState?.price * event.target.value);
+                      }}
+                    />
+                    <HeightBox height={20} />
+                    <TextField
+                      label="Booking Date"
+                      variant="outlined"
+                      fullWidth
+                      type="date"
+                      color="secondary"
+                      value={values.date}
+                      InputLabelProps={{ shrink: true }}
+                      error={errors.date && touched.date}
+                      helperText={errors.date || ""}
+                      onChange={(event) => handleChange("date")(event)}
                     />
                     <HeightBox height={20} />
                     <p>Pay by card</p>
                     <TextField
                       label="Name on the Card"
                       variant="outlined"
+                      value={values.nameOnTheCard}
                       color="secondary"
                       fullWidth
                       error={errors.nameOnTheCard && touched.nameOnTheCard}
@@ -257,6 +400,7 @@ export default function Checkout() {
                     <HeightBox height={10} />
                     <TextField
                       label="Card Number"
+                      value={values.cardNo}
                       variant="outlined"
                       color="secondary"
                       fullWidth
@@ -270,6 +414,7 @@ export default function Checkout() {
                         label="CVV"
                         variant="outlined"
                         color="secondary"
+                        value={values.cvv}
                         fullWidth
                         error={errors.cvv && touched.cvv}
                         helperText={errors.cvv || ""}
@@ -280,8 +425,11 @@ export default function Checkout() {
                         variant="outlined"
                         color="secondary"
                         fullWidth
+                        type="date"
+                        value={values.expire}
                         error={errors.expire && touched.expire}
                         helperText={errors.expire || ""}
+                        InputLabelProps={{ shrink: true }}
                         onChange={(event) => handleChange("expire")(event)}
                       />
                     </Stack>
@@ -292,9 +440,10 @@ export default function Checkout() {
                       variant="contained"
                       fullWidth
                       size="large"
+                      disabled={loading}
                       onClick={handleSubmit}
                     >
-                      Confirm
+                      {loading ? <CircularProgress /> : "Confirm"}
                     </Button>
                   </div>
                 );
@@ -310,12 +459,14 @@ export default function Checkout() {
                 password: "",
                 noOfSeats: 1,
                 nameOnTheCard: "",
+                date: "",
                 cardNo: "",
                 cvv: "",
                 expire: "",
               }}
-              onSubmit={(values) => {
+              onSubmit={(values, actions) => {
                 // validation completed
+                checkUser(values, actions);
               }}
               validationSchema={validationSchemaNewUser}
             >
@@ -331,6 +482,7 @@ export default function Checkout() {
                       variant="outlined"
                       fullWidth
                       color="secondary"
+                      value={values.name}
                       error={errors.name && touched.name}
                       helperText={errors.name || ""}
                       onChange={(event) => handleChange("name")(event)}
@@ -338,6 +490,7 @@ export default function Checkout() {
                     <HeightBox height={10} />
                     <TextField
                       label="Username"
+                      value={values.username}
                       variant="outlined"
                       fullWidth
                       color="secondary"
@@ -348,6 +501,7 @@ export default function Checkout() {
                     <HeightBox height={10} />
                     <TextField
                       label="Phone Number"
+                      value={values.phoneNumber}
                       variant="outlined"
                       fullWidth
                       color="secondary"
@@ -360,6 +514,7 @@ export default function Checkout() {
                       label="Password"
                       variant="outlined"
                       color="secondary"
+                      value={values.password}
                       fullWidth
                       type="password"
                       error={errors.password && touched.password}
@@ -369,6 +524,7 @@ export default function Checkout() {
 
                     <HeightBox height={20} />
                     <p>Pay by card</p>
+
                     <HeightBox height={10} />
                     <TextField
                       label="Number of Seats"
@@ -379,13 +535,30 @@ export default function Checkout() {
                       value={values.noOfSeats}
                       error={errors.noOfSeats && touched.noOfSeats}
                       helperText={errors.noOfSeats || ""}
-                      onChange={(event) => handleChange("noOfSeats")(event)}
+                      onChange={(event) => {
+                        handleChange("noOfSeats")(event);
+                        setSeatPrice(routeState?.price * event.target.value);
+                      }}
+                    />
+                    <HeightBox height={10} />
+                    <TextField
+                      label="Booking Date"
+                      variant="outlined"
+                      fullWidth
+                      value={values.date}
+                      type="date"
+                      color="secondary"
+                      InputLabelProps={{ shrink: true }}
+                      error={errors.date && touched.date}
+                      helperText={errors.date || ""}
+                      onChange={(event) => handleChange("date")(event)}
                     />
                     <HeightBox height={10} />
                     <TextField
                       label="Name on the Card"
                       variant="outlined"
                       color="secondary"
+                      value={values.nameOnTheCard}
                       fullWidth
                       error={errors.nameOnTheCard && touched.nameOnTheCard}
                       helperText={errors.nameOnTheCard || ""}
@@ -396,6 +569,7 @@ export default function Checkout() {
                     <TextField
                       label="Card Number"
                       variant="outlined"
+                      value={values.cardNo}
                       color="secondary"
                       fullWidth
                       error={errors.cardNo && touched.cardNo}
@@ -407,6 +581,7 @@ export default function Checkout() {
                       <TextField
                         label="CVV"
                         variant="outlined"
+                        value={values.cvv}
                         color="secondary"
                         fullWidth
                         error={errors.cvv && touched.cvv}
@@ -417,6 +592,9 @@ export default function Checkout() {
                         label="Expiry"
                         variant="outlined"
                         color="secondary"
+                        value={values.expire}
+                        InputLabelProps={{ shrink: true }}
+                        type="date"
                         fullWidth
                         error={errors.expire && touched.expire}
                         helperText={errors.expire || ""}
@@ -429,236 +607,17 @@ export default function Checkout() {
                       color="secondary"
                       variant="contained"
                       fullWidth
+                      disabled={loading}
                       size="large"
                       onClick={handleSubmit}
                     >
-                      Confirm
+                      {loading ? <CircularProgress /> : "Confirm"}
                     </Button>
                   </div>
                 );
               }}
             </Formik>
           )}
-
-          {/* <Formik
-            initialValues={{
-              UserName: "",
-              Password: "",
-              Firstname: "",
-              Contactno: "",
-              Email: "",
-              Noofseats: "",
-              name: "",
-              cardno: "",
-              cvv: "",
-              expdate: "",
-            }}
-            onSubmit={(values) => {
-              // Validation success and needs to call backend
-              const data = {
-                UserName: values.UserName,
-                UserName: values.Password,
-                Firstname: values.Firstname,
-                Contactno: values.Contactno,
-                Email: values.Email,
-                Noofseats: values.Noofseats,
-                name: values.name,
-                cardno: values.cardno,
-                cvv: values.cvv,
-                expdate: values.expdate,
-                userType: "CUSTOMER",
-              };
-              //registerUser(data);
-            }}
-            validationSchema={validationSchema}
-          >
-            {(formikProps) => {
-              const { errors, handleSubmit, handleChange, touched } =
-                formikProps;
-
-              return (
-                <React.Fragment>
-                  <Grid container spacing={3}>
-                    <dev style={{ paddingLeft: 25 }}>
-                      <FormControlLabel
-                        value="NewUser"
-                        control={<Checkbox checked={clickedItem === "NEW"} />}
-                        label="New User"
-                        labelPlacement="end"
-                        onChange={handleNewUserCheckBoxChange}
-                      />
-
-                      <FormControlLabel
-                        value="ExistingUser"
-                        control={
-                          <Checkbox checked={clickedItem === "EXISTING"} />
-                        }
-                        label="Existing User"
-                        labelPlacement="end"
-                        onChange={handleExistingUserCheckBoxChange}
-                      />
-                    </dev>
-
-                    {clickedItem !== "EXISTING" && (
-                      <Grid item xs={12}>
-                        <TextField
-                          required
-                          id="outlined-required"
-                          color="secondary"
-                          label="Name"
-                          defaultValue=""
-                          fullWidth
-                          error={errors.Firstname && touched.Fisrtname}
-                          helperText={errors.Firstname || ""}
-                          onChange={(event) => handleChange("Firstname")(event)}
-                        />
-                      </Grid>
-                    )}
-
-                    {clickedItem !== "EXISTING" && (
-                      <Grid item xs={12}>
-                        <TextField
-                          required
-                          id="outlined-required"
-                          color="secondary"
-                          label="Contact No"
-                          defaultValue=""
-                          error={errors.Contactno && touched.Contactno}
-                          helperText={errors.Contactno || ""}
-                          onChange={(event) => handleChange("Contactno")(event)}
-                        />
-                      </Grid>
-                    )}
-
-                    {clickedItem === "EXISTING" && (
-                      <Grid item xs={12}>
-                        <TextField
-                          required
-                          id="outlined-required"
-                          color="secondary"
-                          label="User Name"
-                          defaultValue=""
-                          fullWidth
-                          error={errors.Firstname && touched.Fisrtname} //this should change
-                          helperText={errors.Firstname || ""}
-                          onChange={(event) => handleChange("Firstname")(event)}
-                        />
-                      </Grid>
-                    )}
-
-                    {clickedItem === "EXISTING" && (
-                      <Grid item xs={12}>
-                        <TextField
-                          required
-                          id="outlined-required"
-                          color="secondary"
-                          label="Password"
-                          defaultValue=""
-                          error={errors.Contactno && touched.Contactno} //this should change
-                          helperText={errors.Contactno || ""}
-                          onChange={(event) => handleChange("Contactno")(event)}
-                        />
-                      </Grid>
-                    )}
-
-                    <Grid item xs={12}>
-                      <TextField
-                        required
-                        id="outlined-required"
-                        color="secondary"
-                        label="Email"
-                        fullWidth
-                        defaultValue=""
-                        error={errors.Email && touched.Email}
-                        helperText={errors.Email || ""}
-                        onChange={(event) => handleChange("Email")(event)}
-                      />
-                    </Grid>
-
-                    <Grid item xs={12}>
-                      <TextField
-                        required
-                        id="outlined-number"
-                        label="Number of Seats"
-                        color="secondary"
-                        type="number"
-                        InputLabelProps={{
-                          shrink: true,
-                        }}
-                        error={errors.Noofseats && touched.Noofseats}
-                        helperText={errors.Noofseats || ""}
-                        onChange={(event) => handleChange("Noofseats")(event)}
-                      />
-                    </Grid>
-                    <Grid item xs={12} md={6}>
-                      <TextField
-                        required
-                        id="outlined-required"
-                        label="Name on card"
-                        fullWidth
-                        color="secondary"
-                        error={errors.name && touched.name}
-                        helperText={errors.name || ""}
-                        onChange={(event) => handleChange("name")(event)}
-                      />
-                    </Grid>
-
-                    <Grid item xs={12} md={6}>
-                      <TextField
-                        required
-                        id="outlined-required"
-                        label="Card Number"
-                        fullWidth
-                        color="secondary"
-                        error={errors.cardno && touched.cardno}
-                        helperText={errors.cardno || ""}
-                        onChange={(event) => handleChange("cardno")(event)}
-                      />
-                    </Grid>
-
-                    <Grid item xs={12} md={6}>
-                      <TextField
-                        required
-                        id="outlined-required"
-                        label="Exp Date"
-                        fullWidth
-                        color="secondary"
-                        error={errors.expdate && touched.expdate}
-                        helperText={errors.expdate || ""}
-                        onChange={(event) => handleChange("expdate")(event)}
-                      />
-                    </Grid>
-                    <Grid item xs={12} md={6}>
-                      <TextField
-                        required
-                        id="outlined-required"
-                        label="CVV"
-                        fullWidth
-                        color="secondary"
-                        error={errors.cvv && touched.cvv}
-                        helperText={errors.cvv || ""}
-                        onChange={(event) => handleChange("cvv")(event)}
-                      />
-                    </Grid>
-
-                    <Grid style={{ paddingTop: "24px", paddingLeft: "24px" }}>
-                      <Button
-                        type="submit"
-                        color="secondary"
-                        variant="contained"
-                        size="large"
-                        onClick={handleSubmit}
-                        //disabled={loading}
-                        style={{}}
-                      >
-                        Confirm
-                      </Button>
-                    </Grid>
-                  </Grid>
-                </React.Fragment>
-              );
-            }}
-          </Formik> */}
         </Container>
       </Stack>
     </div>

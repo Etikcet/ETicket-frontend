@@ -72,7 +72,7 @@ export default function SignUp() {
       const res = await api.user.registerUser(values);
       if (res.length === 2) {
         const data = res[1];
-        if (data?.statusCode === 200) {
+        if (data?.statusCode === 201) {
           dispatch(signUpRequest(data.data.user));
           const userObj = JSON.stringify(data.data.user);
           localStorage.setItem(ETICKET_USER_DETAILS, userObj);
