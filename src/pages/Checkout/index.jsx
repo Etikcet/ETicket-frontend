@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import Typography from "@mui/material/Typography";
 import TextField from "@mui/material/TextField";
 import { useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 import { Formik } from "formik";
 import * as Yup from "yup";
 import CardMedia from "@mui/material/CardMedia";
@@ -92,12 +93,20 @@ const validationSchemaExisitingUser = Yup.object().shape({
 });
 
 export default function Checkout() {
+  const navigate = useNavigate();
+
   const userState = useSelector((state) => state?.user);
   const routeState = useSelector((state) => state?.route);
   const [seatPrice, setSeatPrice] = React.useState(routeState?.price);
   const [openSnackBar, setOpenSnackBar] = useState(false);
   const [snackMessage, setSnackMessage] = useState({ type: "", message: "" });
   const [loading, setLoading] = useState(false);
+
+  React.useEffect(() => {
+    if (!routeState?.ID) {
+      navigate("/");
+    }
+  }, [routeState]);
 
   const [clickedItem, setClickedItem] = React.useState(
     userState?.auth ? "EXISTING" : "NEW"
