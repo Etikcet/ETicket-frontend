@@ -93,11 +93,7 @@ export default function AccountNavigationBar() {
             </MenuItem>
           </Menu>
 
-          <CustomButton
-            variant="contained"
-            disableElevation
-            onClick={handleClick}
-          >
+          <CustomButton disableElevation onClick={handleClick}>
             Account
           </CustomButton>
 

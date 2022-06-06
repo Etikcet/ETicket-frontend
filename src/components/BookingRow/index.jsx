@@ -40,7 +40,7 @@ export default function BookingRow(props) {
   }, [booking]);
   return (
     <StyledTableRow key={booking.id}>
-      <StyledTableCell align="right">{route?.bus_number}</StyledTableCell>
+      <StyledTableCell align="center">{route?.bus_number}</StyledTableCell>
       <StyledTableCell align="right">{route?.start}</StyledTableCell>
       <StyledTableCell align="right">{route?.finish}</StyledTableCell>
       <StyledTableCell align="right">{booking?.seats}</StyledTableCell>

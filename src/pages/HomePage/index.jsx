@@ -22,7 +22,6 @@ export default function Home() {
       try {
         const [code, data] = await api.route.getPopularRoutes();
         if (code === 200) {
-          console.log(data);
           setPopularRoutes(data?.routes);
         }
       } catch (error) {

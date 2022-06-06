@@ -35,12 +35,16 @@ export default function HomePageRouteSelect({
   const endingCities = [];
 
   stations.forEach((element) => {
-    startingCities.push({
-      label: element.start,
-    });
-    endingCities.push({
-      label: element.finish,
-    });
+    if (!startingCities.includes(element.start)) {
+      startingCities.push({
+        label: element.start,
+      });
+    }
+    if (!endingCities.includes(element.finish)) {
+      endingCities.push({
+        label: element.finish,
+      });
+    }
   });
 
   function searchRouteAvailability() {
@@ -49,11 +53,14 @@ export default function HomePageRouteSelect({
         start: startCity,
         finish: endCity,
         seats: seats,
+        date: selectDate,
       };
       try {
         const [code, res] = await api.route.checkRouteAvailability(data);
-        setSearchedData(res);
-        setRoutesSearched(true);
+        if (code === 200) {
+          setSearchedData(res);
+          setRoutesSearched(true);
+        }
       } catch (error) {}
     }
 
