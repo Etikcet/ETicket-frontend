@@ -33,7 +33,7 @@ export const userSlice = createSlice({
       state.userType = action.payload.userType;
       state.isAdmin = action.payload.userType === "ADMIN";
     },
-    logOurRequest: (state) => {
+    logOutRequest: (state) => {
       state.auth = false;
       state.ID = null;
       state.username = null;
@@ -44,7 +44,7 @@ export const userSlice = createSlice({
   },
 });
 
-export const { loggingRequest, signUpRequest, logOurRequest } =
+export const { loggingRequest, signUpRequest, logOutRequest } =
   userSlice.actions;
 
 export default userSlice.reducer;
